@@ -92,7 +92,7 @@ async function sendToWebhook(
       subject,
       reason,
       submittedAt: new Date().toISOString(),
-      source: 'Lean Homebuilding Advisors LMS',
+      source: 'Supply Chain Academy LMS',
     };
 
     const response = await fetch(webhookUrl, {
