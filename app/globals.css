@@ -1,0 +1,581 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Subtle Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Smooth transitions for interactive elements */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+ 
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+ 
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Glassmorphic styling */
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+  
+  .glass-card-dark {
+    @apply bg-gray-900/70 backdrop-blur-md border border-gray-800/20 shadow-lg;
+  }
+  
+  /* Smooth animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(20px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+  
+  /* Prose styling for module content */
+  .prose h2 {
+    @apply text-xl font-bold text-gray-900 mt-8 mb-4 border-b border-gray-200 pb-2;
+  }
+  
+  .prose h3 {
+    @apply text-lg font-semibold text-gray-900 mt-6 mb-3;
+  }
+  
+  .prose h4 {
+    @apply text-base font-semibold text-orange-600 mt-4 mb-2;
+  }
+  
+  .prose p {
+    @apply text-gray-700 mb-4 leading-relaxed;
+  }
+  
+  .prose ul {
+    @apply text-gray-700 mb-4 pl-5;
+  }
+  
+  .prose li {
+    @apply mb-2;
+  }
+  
+  .prose strong {
+    @apply font-semibold text-gray-900;
+  }
+  
+  .prose table {
+    @apply w-full border-collapse border border-gray-300 mb-6 text-sm;
+  }
+  
+  .prose th {
+    @apply border border-gray-300 bg-gray-50 px-4 py-2 font-semibold text-left;
+  }
+  
+  .prose td {
+    @apply border border-gray-300 px-4 py-2 align-top;
+  }
+
+  /* Smooth scroll behavior */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  
+  /* Loading spinner */
+  .spinner {
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Utility for text truncation */
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ─── Module Map ─── */
+  .module-map {
+    @apply bg-blue-50 border border-blue-200 rounded-lg p-5;
+  }
+
+  .module-map__title {
+    @apply text-base font-bold text-blue-900 mb-3;
+  }
+
+  .module-map__list {
+    @apply list-decimal list-inside space-y-1.5 pl-1;
+  }
+
+  .module-map__link {
+    @apply text-blue-700 hover:text-blue-900 hover:underline text-sm font-medium transition-colors;
+  }
+
+  /* ─── Field Cards (callout boxes) ─── */
+  .field-card {
+    @apply rounded-lg p-4 mb-4 border-l-4;
+  }
+
+  .field-card--warning {
+    @apply bg-amber-50 border-l-amber-400;
+  }
+
+  .field-card--info {
+    @apply bg-sky-50 border-l-sky-400;
+  }
+
+  .field-card--success {
+    @apply bg-emerald-50 border-l-emerald-400;
+  }
+
+  .field-card--error {
+    @apply bg-red-50 border-l-red-400;
+  }
+
+}
+
+/* ─── Knowledge Check Cards (plain CSS, outside @layer) ─── */
+.knowledge-check {
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  border: 1px solid #fed7aa;
+}
+
+.knowledge-check__header {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.knowledge-check__badge {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.knowledge-check__body {
+  padding: 20px;
+  background-color: rgba(255, 247, 237, 0.4);
+}
+
+.knowledge-check__question {
+  color: #111827;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.625;
+}
+
+.knowledge-check__options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.knowledge-check__option {
+  font-size: 0.875rem;
+  color: #374151;
+  padding: 10px 16px;
+  background: #fff;
+  border-radius: 8px;
+  border: 2px solid #e5e7eb;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.knowledge-check__option:hover {
+  border-color: #f97316;
+  background-color: #fff7ed;
+}
+
+.knowledge-check__option--selected {
+  border-color: #f97316;
+  background-color: #fff7ed;
+  box-shadow: 0 0 0 1px #f97316;
+}
+
+.knowledge-check__option--correct {
+  border-color: #10b981 !important;
+  background-color: #ecfdf5 !important;
+  box-shadow: 0 0 0 1px #10b981 !important;
+}
+
+.knowledge-check__option--incorrect {
+  border-color: #ef4444 !important;
+  background-color: #fef2f2 !important;
+  box-shadow: 0 0 0 1px #ef4444 !important;
+}
+
+.knowledge-check__option--revealed {
+  cursor: default;
+  pointer-events: none;
+}
+
+.knowledge-check__option-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #ffedd5;
+  color: #c2410c;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-right: 8px;
+}
+
+.knowledge-check__reveal-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #a7f3d0;
+  background-color: #ecfdf5;
+  color: #047857;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.knowledge-check__reveal-btn:hover:not(:disabled) {
+  background-color: #d1fae5;
+}
+
+.knowledge-check__reveal-btn--locked {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  border-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.knowledge-check__answer {
+  margin-top: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #064e3b;
+  background-color: #ecfdf5;
+  border: 1px solid #a7f3d0;
+}
+
+.knowledge-check__answer--hidden {
+  display: none;
+}
+
+/* ─── Section Dividers (plain CSS, outside @layer) ─── */
+.section-divider {
+  margin: 2.5rem 0;
+  border: none;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #f97316 20%, #f97316 80%, transparent);
+  border-radius: 2px;
+  opacity: 0.3;
+}
+
+/* ─── Scroll offset for TOC anchor links (plain CSS, outside @layer) ─── */
+.content-section-heading {
+  scroll-margin-top: 120px;
+}
+
+/* ─── Collapsible Details/Summary — orange gradient bar (plain CSS, outside @layer) ─── */
+/* Targets all <details> in prose EXCEPT the Knowledge Check "Reveal Answer" toggle */
+
+@keyframes heartbeat-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 0 10px rgba(249, 115, 22, 0.3);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 6px 12px -2px rgba(0,0,0,0.15), 0 0 20px rgba(249, 115, 22, 0.5);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1), 0 0 8px rgba(249, 115, 22, 0.25); }
+  50% { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1), 0 0 22px rgba(249, 115, 22, 0.55); }
+}
+
+.prose details:not(.knowledge-check__reveal) {
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  border: 2px solid #fb923c;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.prose details[open]:not(.knowledge-check__reveal) {
+  animation: none;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  border-color: #fed7aa;
+}
+
+.prose details:not(.knowledge-check__reveal) > summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  list-style: none;
+  transition: opacity 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.prose details:not(.knowledge-check__reveal) > summary:hover {
+  opacity: 0.9;
+}
+
+.prose details:not(.knowledge-check__reveal) > summary::-webkit-details-marker {
+  display: none;
+}
+
+.prose details:not(.knowledge-check__reveal) > summary::before {
+  content: '▶';
+  font-size: 0.75rem;
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.prose details[open]:not(.knowledge-check__reveal) > summary::before {
+  content: '▼';
+}
+
+.prose details:not(.knowledge-check__reveal) > summary::after {
+  content: 'CLICK TO EXPAND';
+  margin-left: auto;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.85;
+  background: rgba(255,255,255,0.2);
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.prose details[open]:not(.knowledge-check__reveal) > summary::after {
+  content: 'CLICK TO COLLAPSE';
+}
+
+.prose details:not(.knowledge-check__reveal) > *:not(summary) {
+  padding: 16px 20px;
+  background-color: rgba(255, 247, 237, 0.4);
+}
+
+/* ─── Section Images (plain CSS, outside @layer) ─── */
+.section-image {
+  margin: 1.5rem 0 2rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.section-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.section-image__caption {
+  padding: 10px 16px;
+  background-color: #f9fafb;
+  color: #6b7280;
+  font-size: 0.8125rem;
+  font-style: italic;
+  text-align: center;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Side-by-side image pair */
+.section-image-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.5rem 0 2rem;
+}
+.section-image-pair.section-image-trio {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.section-image-pair.section-image-trio .section-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.section-image-pair .section-image {
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .section-image-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Float image alongside text */
+.section-image--float-right {
+  float: right;
+  width: 45%;
+  margin: 0 0 1.5rem 1.5rem;
+}
+
+.section-image--float-right.section-image--small {
+  width: 30%;
+}
+
+.section-image--small:not(.section-image--float-right) {
+  max-width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .section-image--float-right {
+    float: none;
+    width: 100%;
+    margin: 1.5rem 0 2rem;
+  }
+}

@@ -1,0 +1,200 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                  String    @id @default(cuid())
+  name                String?
+  email               String    @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  role                Role      @default(STUDENT)
+  companyId           String?
+  courseCompletedAt   DateTime? // Date when all modules were completed
+  surveyCompleted     Boolean   @default(false)
+  signupCode          String?   // enrollment code used at registration
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  company         Company?        @relation(fields: [companyId], references: [id])
+  progress        UserProgress[]
+  resetTokens     PasswordResetToken[]
+  surveyResponse  SurveyResponse?
+}
+
+model Company {
+  id           String   @id @default(cuid())
+  companyName  String
+  companyCode  String   @unique
+  isPublic     Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  users            User[]
+  surveyResponses  SurveyResponse[]
+  companyCodes     CompanyCode[]
+}
+
+model CompanyCode {
+  id        String   @id @default(cuid())
+  companyId String
+  code      String   @unique
+  createdAt DateTime @default(now())
+
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+}
+
+model Module {
+  id           String   @id @default(cuid())
+  moduleNumber Int      @unique
+  title        String
+  description  String
+  content      String   @db.Text
+  youtubeUrl   String?
+  order        Int
+  createdAt    DateTime @default(now())
+  
+  quizzes      Quiz[]
+  progress     UserProgress[]
+}
+
+model Quiz {
+  id             String   @id @default(cuid())
+  moduleId       String
+  questionText   String   @db.Text
+  optionA        String
+  optionB        String
+  optionC        String
+  optionD        String
+  correctAnswer  String   // 'A', 'B', 'C', or 'D'
+  
+  module         Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+model UserProgress {
+  id               String    @id @default(cuid())
+  userId           String
+  moduleId         String
+  videoWatched     Boolean   @default(false)
+  quizPassed       Boolean   @default(false)
+  quizScore        Float?    // percentage
+  quizAttempts     Int       @default(0)
+  lastAttemptDate  DateTime?
+  completedAt      DateTime?
+  takeaways        String?   @db.Text  // Student's key takeaways
+  timeSpent        Int       @default(0)  // Time spent in seconds
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module           Module    @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, moduleId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model SurveyResponse {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  companyId   String?  // snapshot at submission time for easy filtering
+  submittedAt DateTime @default(now())
+
+  // Q1: Overall experience (1–10)
+  q1OverallExperience    Int
+
+  // Q2: Content meaningfulness (1–5 Likert)
+  q2ContentMeaningful    Int
+
+  // Q3: Module cohesion (1–5 Likert)
+  q3ModuleCohesion       Int
+
+  // Q4: Layout & ease of use (1–5)
+  q4LayoutRating         Int
+
+  // Q5: Technical issues (true = yes)
+  q5TechIssues           Boolean
+  q5TechDetails          String?  @db.Text
+
+  // Q6: Video content effectiveness (1–5 Likert)
+  q6VideoEffectiveness   Int
+
+  // Q7: Most useful module (module title)
+  q7MostUsefulModule     String
+
+  // Q8: Over-processed module (module title or "None")
+  q8OverProcessedModule  String
+
+  // Q9: Confidence (1–10)
+  q9Confidence           Int
+
+  // Q10: Relevancy (1–5 Likert)
+  q10Relevancy           Int
+
+  // Q11: NPS (0–10)
+  q11Nps                 Int
+
+  // Q12: Open-ended improvement suggestion
+  q12Improvement         String   @db.Text
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+}
+
+enum Role {
+  STUDENT
+  COMPANY_ADMIN
+  SUPER_ADMIN
+}

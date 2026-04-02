@@ -1,0 +1,1147 @@
+
+import { PrismaClient, Role } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+const prisma = new PrismaClient();
+
+const moduleData = [
+  {
+    moduleNumber: 1,
+    title: "Site Preparation & Permitting",
+    description: "Learn the fundamentals of site preparation including surveying, clearing, grubbing, erosion control, and the permitting process.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand property line identification and building setbacks</li>
+      <li>Master site preparation techniques including clearing and grading</li>
+      <li>Navigate the permitting and inspection process</li>
+      <li>Implement proper erosion control measures</li>
+      <li>Coordinate trade partners and site logistics</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This foundational stage is one of the most critical, as it sets the stage for the entire project. Errors or oversights here can cause significant delays and budget overruns. It involves transforming a raw piece of land into a build-ready site while navigating the necessary legal and administrative hurdles.</p>
+
+    <h3>Surveyor Responsibilities</h3>
+    <h4>Property Line and Setback Identification</h4>
+    <p>The surveyor researches the legal plat of the property to identify the exact boundaries. They physically locate and mark the property corners with stakes and flagging. They also mark the building setbacks, which are the minimum distances the structure must be from the property lines, as dictated by local zoning ordinances.</p>
+
+    <h4>House Staking</h4>
+    <p>Using the approved architectural plans, the surveyor stakes out the precise footprint of the house on the lot. This includes marking the corners of the foundation and any other critical points that the excavation and foundation contractors will use as a guide. The stakes must be accurate to within a fraction of an inch to ensure the house is built in the correct location and orientation.</p>
+
+    <h3>Site Prep Contractor Activities</h3>
+    <h4>Clearing and Grubbing</h4>
+    <p>All trees, brush, and vegetation within the construction zone are removed. Trees designated to be saved are clearly marked and protected. The root systems of removed trees are grubbed out to prevent future settling and decay.</p>
+
+    <h4>Erosion Control</h4>
+    <p>Silt fences or other erosion control measures are installed around the perimeter of the disturbed area to prevent soil from washing off-site during rain, a common requirement before any major grading can begin.</p>
+
+    <h4>Rough Grading</h4>
+    <p>Using heavy equipment like bulldozers and graders, the contractor reshapes the lot to create the basic contours for proper drainage, as shown on the site plan. This involves cutting high spots and filling low spots to create a level building pad and to ensure water will flow away from the future foundation.</p>
+
+    <h4>Access Road and Staging Area</h4>
+    <p>A temporary construction driveway is created using gravel or crushed rock to provide a stable surface for heavy vehicles and to minimize mud being tracked onto public roads. A staging area is designated for material deliveries and parking.</p>
+
+    <h4>Temporary Utilities</h4>
+    <p>A temporary electrical pole and panel are installed by a licensed electrician and inspected by the utility company. A temporary water meter or connection to a well is established for construction use.</p>
+
+    <h3>City Inspector Role</h3>
+    <h4>Permit Review and Approval</h4>
+    <p>The inspector or plans examiner meticulously reviews the submitted building plans and engineering documents for compliance with all local building codes, zoning laws, and ordinances. This includes structural, electrical, plumbing, mechanical, and energy codes. Once approved, the building permit is issued, which must be prominently displayed on the job site.</p>
+
+    <h4>Initial Site/Erosion Control Inspection</h4>
+    <p>Before major earthmoving, an inspector may visit the site to verify that the required erosion control measures are correctly installed. They will check that the silt fence is properly trenched and staked to effectively contain sediment.</p>
+
+    <h3>Construction Manager Oversight</h3>
+    <h4>Coordination and Scheduling</h4>
+    <p>The CM schedules the surveyor and site prep contractor in the correct sequence. They ensure that the surveyor has the final approved plans to work from.</p>
+
+    <h4>Permitting and Documentation</h4>
+    <p>The CM is responsible for compiling and submitting the complete permit application package to the city, which may include multiple sets of plans, engineering calculations, soil reports, and other documents. They track the permit through the review process and respond to any questions or requests for additional information from the city.</p>
+
+    <h4>Pre-Construction Verification</h4>
+    <p>The CM verifies that all conditions from the land department or developer have been met before work begins (e.g., architectural review committee approval, tree preservation plans).</p>
+
+    <h4>Site Logistics and Safety</h4>
+    <p>The CM establishes the site layout, including the location of the temporary utilities, construction entrance, material storage, and waste dumpster. A comprehensive site safety plan is developed and communicated to all trade partners, including requirements for personal protective equipment (PPE) and emergency procedures.</p>
+  </section>
+</div>
+    `,
+    order: 1
+  },
+  {
+    moduleNumber: 2,
+    title: "Foundation",
+    description: "Master foundation construction from excavation to waterproofing, including footings, foundation walls, and under-slab plumbing.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand excavation and hole preparation techniques</li>
+      <li>Master footing and foundation wall construction</li>
+      <li>Learn proper waterproofing and drainage installation</li>
+      <li>Coordinate under-slab plumbing installation</li>
+      <li>Navigate foundation inspection requirements</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This stage is where the house gets its structural base. The foundation must be strong, square, and level to support the weight of the entire house and resist the forces of the surrounding soil. Precision is paramount in this stage.</p>
+
+    <h3>Excavator Responsibilities</h3>
+    <h4>Hole Excavation</h4>
+    <p>Following the surveyor's stakes, the excavator digs the hole for the foundation to the depth specified in the plans. The soil is stockpiled on-site in a designated location, to be used for backfilling later. The bottom of the excavation must be level and undisturbed soil.</p>
+
+    <h4>Utility Trenching</h4>
+    <p>The excavator also digs trenches for the underground utilities (water, sewer, gas, electrical conduit) from the street to the house.</p>
+
+    <h3>Concrete Contractor Work</h3>
+    <h4>Footing Construction</h4>
+    <p>Forms (temporary molds) are set up in the bottom of the excavation to create the shape of the footings. Steel reinforcing bars (rebar) are placed inside the forms to add strength to the concrete. The concrete is poured into the forms and allowed to cure.</p>
+
+    <h4>Foundation Wall Construction</h4>
+    <p>Forms are set up on top of the footings for the foundation walls. Rebar is placed within the forms, and anchor bolts are set into the top of the wall to later secure the wood framing. The concrete is poured into the forms and vibrated to remove air pockets.</p>
+
+    <h4>Waterproofing and Drainage</h4>
+    <p>After the forms are removed, a waterproofing membrane or coating is applied to the exterior of the foundation walls. A perforated drain pipe (foundation drain or footing drain) is installed around the base of the foundation and covered with gravel to collect and carry away groundwater.</p>
+
+    <h4>Slab Pouring</h4>
+    <p>A layer of gravel and a vapor barrier are placed on the ground inside the foundation. The concrete for the basement floor or slab-on-grade is poured and finished to a smooth, level surface.</p>
+
+    <h3>Plumber Tasks</h3>
+    <h4>Under-Slab Rough-In</h4>
+    <p>Before the slab is poured, the plumber installs all the plumbing pipes that will be located underneath the concrete floor. This includes drains for sinks, showers, and toilets, as well as any water supply lines that need to be run under the slab.</p>
+
+    <h3>City Inspector Requirements</h3>
+    <h4>Footing Inspection</h4>
+    <p>The inspector verifies that the footing trenches are dug to the correct depth and width. They check the placement and size of the rebar to ensure it meets the structural plans. The ground must be free of loose soil and debris. This inspection must pass before any concrete is poured.</p>
+
+    <h4>Foundation/Under-Slab Inspection</h4>
+    <p>The inspector checks the foundation walls for proper height, thickness, and rebar placement. They inspect the waterproofing and drainage system to ensure it is installed correctly. They also inspect the under-slab plumbing to make sure it is properly sloped and connected. This inspection must pass before backfilling.</p>
+
+    <h3>Construction Manager Role</h3>
+    <h4>Scheduling and Coordination</h4>
+    <p>The CM schedules the excavator, concrete contractor, and plumber in the correct sequence, ensuring no delays between trades. They coordinate the delivery of concrete and other materials.</p>
+
+    <h4>Quality Control</h4>
+    <p>The CM verifies the foundation layout and dimensions against the plans. They inspect the work of each trade to ensure it meets quality standards. They ensure the foundation is square and level.</p>
+
+    <h4>Inspection Management</h4>
+    <p>The CM schedules all required city inspections and is present on-site to meet with the inspector. If an inspection fails, the CM is responsible for ensuring the corrections are made and the re-inspection is scheduled and passed.</p>
+
+    <h4>Backfilling Authorization</h4>
+    <p>The CM authorizes the excavator to backfill around the foundation only after the foundation inspection has been approved.</p>
+  </section>
+</div>
+    `,
+    order: 2
+  },
+  {
+    moduleNumber: 3,
+    title: "Framing",
+    description: "Build the structural skeleton of the house including floor systems, walls, roof structure, windows, and doors.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Master floor system construction techniques</li>
+      <li>Understand wall assembly and installation</li>
+      <li>Learn roof and ceiling construction methods</li>
+      <li>Navigate window and door installation</li>
+      <li>Pass comprehensive framing inspections</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>During the framing stage, the house transforms from a concrete slab into a recognizable structure. This is often considered one of the most exciting phases for a homeowner to watch. The framing creates the "skeleton" of the house, defining all the rooms, walls, and rooflines. Accuracy is critical, as all subsequent trades will rely on the framing being plumb, level, and square.</p>
+
+    <h3>Framing Contractor Responsibilities</h3>
+    <h4>Floor System Construction</h4>
+    <p>The contractor lays down a sill plate, which is pressure-treated lumber bolted directly to the foundation wall. Floor joists (or pre-engineered floor trusses) are set on top of the sill plate, spaced according to the plans (typically 16 or 24 inches on center). Rim joists are installed around the perimeter. The subfloor, typically 3/4-inch plywood or OSB (Oriented Strand Board), is glued and nailed to the joists, creating the walking surface for the first floor.</p>
+
+    <h4>Wall Assembly</h4>
+    <p>Walls are typically assembled on the subfloor and then lifted into place. Each wall section consists of top and bottom plates, vertical studs, and headers over window and door openings. Exterior walls are sheathed with plywood or OSB, which adds significant structural strength and a nailing surface for siding.</p>
+
+    <h4>Roof and Ceiling Assembly</h4>
+    <p>Ceiling joists are installed to form the structure of the ceiling. The roof is constructed using either pre-fabricated trusses delivered to the site or by stick-building with individual rafters. The trusses or rafters are lifted into place (often with a crane) and secured, creating the pitch and shape of the roof. The roof is then sheathed with OSB or plywood, creating the roof deck.</p>
+
+    <h4>Window and Door Installation</h4>
+    <p>Windows and exterior doors are installed into the prepared openings. Proper flashing and sealing around these units are critical to prevent water intrusion.</p>
+
+    <h3>City Inspector Requirements</h3>
+    <h4>Framing Inspection (Shear/Structural Inspection)</h4>
+    <p>This is one of the most comprehensive and critical inspections. The inspector will walk the entire structure, often with the plans in hand.</p>
+
+    <ul>
+      <li><strong>Structural Integrity:</strong> They verify that all lumber and beams are the correct size and grade, that joist and rafter spans are not exceeded, and that all structural connections (e.g., hurricane ties, anchor bolts) are correctly installed.</li>
+      <li><strong>Load Path:</strong> The inspector checks to ensure there is a continuous load path, meaning the weight from the roof is properly transferred all the way down to the foundation.</li>
+      <li><strong>Nailing and Fastening:</strong> They will check the nailing patterns on the sheathing and other structural components to ensure they meet the required shear strength.</li>
+      <li><strong>Openings:</strong> Headers over windows and doors are checked to ensure they are sized correctly for the load they are carrying.</li>
+      <li><strong>Code Compliance:</strong> The inspector checks for compliance with numerous other code requirements, such as fire blocking between floors and in specific wall cavities.</li>
+    </ul>
+
+    <p>This inspection must pass before any plumbing, electrical, or mechanical work can be covered up.</p>
+
+    <h3>Construction Manager Role</h3>
+    <h4>Material Management</h4>
+    <p>The CM is responsible for doing a "take-off" (calculating the amount of lumber needed) from the plans and ordering the lumber package. They coordinate the delivery of materials to the site, ensuring they are stored properly and protected from the weather.</p>
+
+    <h4>Quality Control and Oversight</h4>
+    <p>The CM is on-site daily during framing to oversee the contractor. They check that walls are being built square and plumb, that dimensions are correct, and that the framing matches the architectural plans exactly. They ensure the framers are following all safety protocols.</p>
+
+    <h4>Scheduling and Coordination</h4>
+    <p>The CM schedules the framing inspection with the city once the work is complete. They coordinate with the plumber and electrician, who may need to drill holes through the framing for their pipes and wires before the inspection.</p>
+
+    <h4>Pre-Inspection Walkthrough</h4>
+    <p>Before the official inspector arrives, the CM conducts a thorough walkthrough with the framing contractor's foreman. They use a checklist to look for common failure points and ensure everything is ready for the inspector. This proactive step is crucial for avoiding costly delays from a failed inspection.</p>
+  </section>
+</div>
+    `,
+    order: 3
+  },
+  {
+    moduleNumber: 4,
+    title: "Exterior Finishes",
+    description: "Learn how to weatherproof the house with roofing, siding, and exterior trim installation to protect the investment.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Master roofing installation and waterproofing techniques</li>
+      <li>Understand siding and exterior cladding systems</li>
+      <li>Learn proper flashing and weather barrier installation</li>
+      <li>Coordinate exterior finish scheduling</li>
+      <li>Implement weather protection strategies</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This stage is often referred to as "drying-in" the house. The goal is to make the structure weatherproof so that interior work can proceed without risk of water damage. This stage protects the investment made in the framing and prepares the house for the mechanical rough-in.</p>
+
+    <h3>Roofing Contractor Work</h3>
+    <h4>Underlayment Installation</h4>
+    <p>A water-resistant underlayment (felt paper or synthetic membrane) is installed over the roof deck to provide a secondary layer of protection. In areas prone to ice dams, an ice and water shield is installed along the eaves and valleys.</p>
+
+    <h4>Roofing Material Installation</h4>
+    <p>Asphalt shingles are the most common residential roofing material. They are installed starting from the bottom edge of the roof and working upward, with each row overlapping the one below. Metal roofing, tile, or other materials follow their specific installation procedures. Proper nailing patterns and exposure are critical for wind resistance and longevity.</p>
+
+    <h4>Flashing Installation</h4>
+    <p>Metal flashing is installed around all roof penetrations (chimneys, plumbing vents, skylights) and in valleys to direct water away and prevent leaks. Step flashing is installed where the roof meets a vertical wall.</p>
+
+    <h3>Siding/Masonry Contractor Tasks</h3>
+    <h4>Weather-Resistant Barrier</h4>
+    <p>A house wrap or building paper is installed over the exterior sheathing to provide a weather-resistant barrier while still allowing moisture vapor to escape from inside the wall.</p>
+
+    <h4>Siding Installation</h4>
+    <ul>
+      <li><strong>Vinyl Siding:</strong> Installed with starter strips at the bottom and then overlapping courses working upward.</li>
+      <li><strong>Fiber Cement Siding:</strong> Nailed or screwed to the wall, with proper spacing for expansion and contraction.</li>
+      <li><strong>Wood Siding:</strong> Requires careful attention to painting or staining for protection.</li>
+      <li><strong>Brick or Stone Veneer:</strong> Laid up against the exterior wall, with metal ties connecting it to the structure and weep holes at the bottom to allow moisture to escape.</li>
+    </ul>
+
+    <h4>Exterior Trim</h4>
+    <p>Trim boards are installed around windows, doors, corners, and along the roofline to provide a finished appearance and additional weather protection.</p>
+
+    <h3>City Inspector Requirements</h3>
+    <h4>Sheathing Inspection</h4>
+    <p>This may be part of the framing inspection. The inspector checks that the sheathing is properly attached to resist wind uplift and racking.</p>
+
+    <h4>Roofing Inspection</h4>
+    <p>The inspector verifies that the underlayment is installed correctly and that the roofing material is installed according to manufacturer specifications and code requirements. They check flashing details to ensure they will effectively shed water.</p>
+
+    <h3>Construction Manager Responsibilities</h3>
+    <h4>Scheduling and Coordination</h4>
+    <p>The CM schedules the roofing contractor immediately after the framing inspection passes to get the house dried-in as quickly as possible. They coordinate the siding contractor to begin work as soon as the roofing is complete.</p>
+
+    <h4>Quality Control</h4>
+    <p>The CM inspects the roof for proper installation, looking for any exposed nails, improperly aligned shingles, or inadequate flashing. They check the siding for straightness, proper overlap, and secure attachment.</p>
+
+    <h4>Weather Protection</h4>
+    <p>The CM ensures that any openings (windows, doors) are properly sealed and that the house is secure from the elements before the end of each workday.</p>
+
+    <h4>Scaffolding and Safety</h4>
+    <p>The CM coordinates the rental and setup of scaffolding or lifts as needed for safe access to the exterior walls and roof.</p>
+  </section>
+</div>
+    `,
+    order: 4
+  },
+  {
+    moduleNumber: 5,
+    title: "Rough-In Mechanicals",
+    description: "Install the essential systems including HVAC, plumbing, and electrical rough-in work that will be hidden behind walls.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand HVAC equipment and ductwork installation</li>
+      <li>Master plumbing rough-in techniques and requirements</li>
+      <li>Learn electrical wiring and panel installation</li>
+      <li>Coordinate multiple trade partners effectively</li>
+      <li>Navigate comprehensive rough-in inspections</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This is the stage where the "guts" of the house are installed—all the systems that will be hidden behind the walls. Coordination between the three major trades (HVAC, plumbing, electrical) is essential, as their work often intersects and must be carefully planned to avoid conflicts.</p>
+
+    <h3>HVAC Contractor Work</h3>
+    <h4>Equipment Installation</h4>
+    <p>The furnace and/or air handler is set in place, typically in a mechanical room, basement, or attic. The outdoor condenser unit for the air conditioning system is set on a pad outside the house.</p>
+
+    <h4>Ductwork Installation</h4>
+    <p>Supply ducts are run from the furnace/air handler to each room, terminating in locations where registers will be installed. Return air ducts are installed to bring air back to the furnace/air handler. Ducts are typically made of sheet metal or flexible insulated ducting. All duct joints are sealed with mastic or metal tape (not cloth duct tape) to prevent air leakage.</p>
+
+    <h4>Venting</h4>
+    <p>Exhaust vents for bathrooms and the kitchen range hood are installed, venting to the outside. The furnace combustion vent is installed according to code.</p>
+
+    <h3>Plumber Responsibilities</h3>
+    <h4>Water Supply Lines</h4>
+    <p>Hot and cold water lines (typically PEX, copper, or CPVC) are run from the main water line to each fixture location (sinks, toilets, showers, washing machine, etc.). Lines are secured to the framing and protected from potential damage.</p>
+
+    <h4>Drain, Waste, and Vent (DWV) System</h4>
+    <p>Drain pipes (typically PVC or ABS) are installed from each fixture, sloping downward to carry waste to the main sewer line or septic system. Vent pipes are run upward through the roof to allow sewer gases to escape and to equalize pressure in the drain system. The plumber must ensure proper slope and venting for all drains.</p>
+
+    <h4>Fixture Rough-In</h4>
+    <p>Shower and tub units are set in place (the actual faucets and trim are installed later). Stub-outs (short pipe extensions) are installed at the correct height and location for sinks, toilets, and other fixtures.</p>
+
+    <h3>Electrician Tasks</h3>
+    <h4>Service Panel Installation</h4>
+    <p>The main electrical panel (breaker box) is installed, typically in the garage, basement, or utility room. The meter base is installed on the exterior of the house.</p>
+
+    <h4>Wiring Installation</h4>
+    <p>Electrical wire (typically Romex cable) is run from the panel to every outlet, switch, and light fixture location. Wires are pulled through holes drilled in the framing and secured with staples. Separate circuits are run for high-draw appliances (oven, dryer, water heater, HVAC).</p>
+
+    <h4>Boxes and Devices</h4>
+    <p>Electrical boxes are installed at every outlet, switch, and fixture location. Wires are brought into the boxes and left with enough slack for later connection to devices.</p>
+
+    <h4>Special Systems</h4>
+    <p>Wiring for phone, data (ethernet), cable TV, doorbell, and security systems is installed.</p>
+
+    <h3>City Inspector Requirements</h3>
+    <h4>Rough-In Inspection (Mechanical, Plumbing, Electrical)</h4>
+    <p>This is a comprehensive inspection that may be done as a single visit or as separate inspections for each trade.</p>
+
+    <ul>
+      <li><strong>HVAC:</strong> The inspector checks duct sizing, proper support and sealing, clearances around equipment, and proper venting of combustion appliances.</li>
+      <li><strong>Plumbing:</strong> The inspector verifies proper pipe sizing, slope of drains, proper venting, secure attachment, and may require a pressure test of the water lines and a drain test.</li>
+      <li><strong>Electrical:</strong> The inspector checks wire sizing for the amperage, proper grounding and bonding, correct box fill, proper support of cables, and that all connections are made in accessible boxes.</li>
+    </ul>
+
+    <p>This inspection must pass before insulation and drywall can be installed.</p>
+
+    <h3>Construction Manager Role</h3>
+    <h4>Trade Coordination</h4>
+    <p>The CM schedules the HVAC, plumbing, and electrical contractors in a coordinated sequence, often with some overlap. They hold coordination meetings to resolve conflicts where ductwork, pipes, and wires intersect.</p>
+
+    <h4>Quality Control</h4>
+    <p>The CM walks the job site regularly during rough-in to ensure work is progressing correctly. They check that all systems are being installed according to the plans and that the work is neat and professional.</p>
+
+    <h4>Pre-Inspection Walkthrough</h4>
+    <p>Before calling for the rough-in inspection, the CM does a detailed walkthrough with each trade contractor. They use a checklist to verify that all work is complete and ready for inspection.</p>
+
+    <h4>Inspection Management</h4>
+    <p>The CM schedules the rough-in inspection(s) and is present to meet with the inspector and answer any questions. If any issues are identified, the CM ensures they are corrected promptly and schedules the re-inspection.</p>
+  </section>
+</div>
+    `,
+    order: 5
+  },
+  {
+    moduleNumber: 6,
+    title: "Insulation and Drywall",
+    description: "Master insulation installation, drywall finishing, and thermal envelope principles to create energy-efficient, aesthetically excellent interior spaces.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Master the application of thermal insulation techniques and R-value engineering principles to optimize building envelope performance and energy efficiency across multiple climate zones</li>
+      <li>Execute drywall installation, joint treatment, and finishing procedures to industry-accepted standards while achieving specified finish levels for various application requirements</li>
+      <li>Apply advanced compound application techniques, progressive feathering methods, and surface perfection protocols to create seamless wall and ceiling systems ready for final decoration</li>
+      <li>Navigate municipal insulation inspection protocols, energy code compliance requirements, and thermal envelope verification procedures including blower door testing methodologies</li>
+      <li>Coordinate the complex sequencing of insulation and drywall operations while managing critical success factors including schedule optimization, quality assurance protocols, climate control requirements, and comprehensive dust management systems</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview: The Thermal and Aesthetic Envelope</h2>
+    <p>The insulation and drywall phase represents a transformative moment in residential construction—the point where the structural skeleton becomes a habitable space with environmental control and aesthetic appeal. This stage creates the building's thermal envelope while establishing the foundation for all interior finish work. The Construction Manager must orchestrate the precise sequencing of insulation installation, mandatory inspections, and drywall finishing while managing the complex coordination between specialized trades, ensuring compliance with increasingly stringent energy codes, and maintaining rigorous quality standards that will directly impact both the home's energy performance and visual excellence for decades to come.</p>
+
+    <h3>Insulation Contractor Operations and Building Science Principles</h3>
+    
+    <h4>Thermal Resistance Fundamentals and R-Value Engineering</h4>
+    <p>The insulation contractor begins by understanding that R-value (thermal resistance) is the measure of a material's ability to resist heat flow—higher R-values indicate greater insulating effectiveness. Climate zones dictate minimum R-value requirements: walls typically require R-13 to R-21, ceilings need R-38 to R-60, and floors over unconditioned spaces demand R-19 to R-30. The contractor must calculate the required insulation thickness to achieve code-mandated R-values, recognizing that different insulation types provide different R-values per inch: fiberglass batts average R-3.2 per inch, blown cellulose offers R-3.7 per inch, and closed-cell spray foam delivers R-6.0 per inch.</p>
+    <p>The contractor coordinates with the Construction Manager to confirm that the specified insulation type and thickness match the architectural plans and energy calculations. They verify that any insulation compression (which dramatically reduces R-value) is avoided and that thermal bridging through studs is minimized through advanced framing techniques or continuous insulation strategies. Understanding that air movement through insulation can reduce effectiveness by up to 50%, the contractor ensures that the insulation works in conjunction with the air barrier system to create a complete thermal envelope.</p>
+
+    <h4>Batt Insulation Installation and Quality Control</h4>
+    <p>For batt insulation systems (fiberglass or mineral wool), the contractor begins installation by measuring and cutting batts to fit precisely between studs in exterior walls and between joists in attic spaces. The batts must fill the cavity completely without compression—compressed insulation loses R-value proportionally to the compression ratio. The contractor uses friction-fit batts sized slightly wider than the cavity to ensure complete contact with framing members without requiring compression.</p>
+    <p>When installing faced batts (those with a kraft paper or foil vapor retarder), the contractor positions the facing toward the interior (warm in winter) side of the wall, following the principle that vapor barriers belong on the warm side of the assembly. The facing flanges are stapled to the face or sides of studs, depending on local code requirements. Around electrical boxes, plumbing penetrations, and other obstructions, the contractor carefully splits and fits the batts to maintain continuous coverage, recognizing that even small gaps significantly compromise thermal performance.</p>
+    <p>The contractor pays special attention to detail areas: insulation is fitted behind electrical boxes to prevent air leakage paths; batts are cut to fit tightly around window and door frames; and multiple layers are used in deep cavities with staggered seams to eliminate thermal shorts. In cathedral ceilings and other rafter-bay applications, the contractor ensures that a ventilation airspace is maintained between the insulation and roof deck when required by code, typically using baffles to maintain airflow from soffit to ridge vents.</p>
+
+    <h4>Blown-In Insulation Systems and Application Methodology</h4>
+    <p>For attic applications, the contractor often employs blown-in insulation (loose-fill fiberglass or cellulose) to achieve required R-values efficiently. Before blowing insulation, the contractor installs depth markers or rulers throughout the attic space, typically every 25 feet, to serve as visual verification of proper coverage depth. These markers indicate the specific depth needed to achieve the target R-value—for example, 14 inches of blown fiberglass to reach R-49.</p>
+    <p>The contractor operates the blowing machine at manufacturer-specified settings to achieve the proper density and coverage. Cellulose insulation requires specific density levels (typically 1.5 to 2.0 pounds per cubic foot in attics) to prevent settling over time. The contractor ensures even distribution across the entire attic floor, paying special attention to difficult-to-reach areas above exterior wall plates and in eave areas. Dam boards or baffles are installed around attic access openings to prevent insulation from spilling into living spaces or blocking ventilation paths.</p>
+    <p>The contractor coordinates with the electrician to ensure that recessed light fixtures are IC-rated (insulation contact) before covering them with insulation. Non-IC fixtures require maintaining a 3-inch clearance, which is achieved using specially constructed dams. The contractor also verifies that the attic is properly vented and that insulation doesn't block soffit vents or ridge vents, maintaining the critical balance between insulation and ventilation.</p>
+
+    <h4>Spray Foam Insulation Technology and Application Science</h4>
+    <p>When spray foam insulation is specified, the contractor brings specialized expertise in polyurethane foam systems. Two-component spray foam (isocyanate and polyol resin) is applied using professional equipment that heats, pressurizes, and proportions the chemicals for proper expansion and curing. Closed-cell spray foam (density of 2.0 pounds per cubic foot) provides R-6.0 per inch plus an air barrier and vapor retarder in one application, making it ideal for cathedral ceilings and basement walls.</p>
+    <p>Open-cell spray foam (density of 0.5 pounds per cubic foot) delivers R-3.7 per inch and functions as an air barrier but remains vapor-permeable, making it suitable for climate zones where vapor diffusion is beneficial. The contractor applies foam in multiple passes or "lifts," typically 2 to 3 inches per lift for closed-cell and up to 8 inches per lift for open-cell, allowing proper heat dissipation during the exothermic curing process. Each pass is inspected for coverage and proper thickness before subsequent applications.</p>
+    <p>The contractor manages critical application parameters: ambient temperature must be between 60°F and 80°F; substrate temperature should be at least 5°F above the dew point to prevent condensation; and humidity levels are monitored to ensure proper curing. The contractor trims excess foam flush with framing members using specialized saws or hot knives, creating a smooth surface for drywall installation. All foam applications are documented with application reports including coverage areas, thickness measurements, and batch numbers for quality assurance and warranty compliance.</p>
+
+    <h3>Drywall Contractor Operations and Gypsum Board Technology</h3>
+    
+    <h4>Gypsum Board Material Science and Product Selection</h4>
+    <p>The drywall contractor begins by understanding that standard gypsum board consists of a gypsum core sandwiched between paper facings. Different products serve specific applications: standard 1/2-inch panels for walls and most ceilings; 5/8-inch Type X fire-resistant board for garage ceilings and fire-rated assemblies; moisture-resistant "green board" or mold-resistant purple board for bathrooms; and abuse-resistant panels for high-traffic areas. The contractor coordinates with the Construction Manager to confirm product specifications match the plans and code requirements.</p>
+    <p>Panel dimensions are strategically selected to minimize joints: 4x8-foot sheets for standard residential walls; 4x12-foot or longer panels for walls with higher ceilings; and 54-inch wide sheets for 9-foot walls. The contractor calculates material quantities with 15% waste factor and schedules delivery to coincide with installation readiness, typically positioning panels perpendicular to framing members to maximize strength and minimize the number of butt joints.</p>
+
+    <h4>Drywall Hanging Techniques and Attachment Specifications</h4>
+    <p>Installation begins with ceiling panels, which are hung first to allow wall panels to support ceiling edges. The contractor uses specialized panel lifts or assembles a crew of hangers working in coordinated teams—ceiling installation typically requires two hangers working together to position and fasten panels. Panels are positioned tight against framing and secured using Type W (coarse thread) screws for wood framing or Type S (fine thread) screws for metal studs.</p>
+    <p>The contractor follows strict fastener patterns: screws are spaced 12 inches on center on ceilings and 16 inches on center on walls, placed 3/8 inch from panel edges and driven perpendicular to the surface. Each screw is driven to create a slight dimple without breaking the paper facing—the dimple will be filled during finishing. Screws penetrate at least 5/8 inch into wood framing and at least 3/8 inch into metal studs. End joints (butt joints) are staggered from row to row by at least 48 inches to prevent cracking patterns.</p>
+    <p>The contractor cuts precise openings for electrical boxes, light fixtures, HVAC registers, and other penetrations using specialized drywall saws, routers, or oscillating tools. The principle is "measure twice, cut once"—panels are marked from measurements taken from known reference points, then cut and test-fitted before final installation. Around door and window openings, the contractor installs full-length panels when possible, avoiding short pieces that may lead to cracking at corner joints.</p>
+
+    <h4>Joint Treatment Systems and Finishing Levels</h4>
+    <p>Before beginning joint finishing, the contractor understands that industry standards (ASTM C840 and GA-214) define five levels of finish, each appropriate for different final decoration methods. Level 4 (standard smooth finish with primer applied) is the minimum acceptable for most residential applications with paint or wallcovering. Level 5 (includes a skim coat of joint compound over the entire surface) is specified for critical lighting conditions or high-end finishes.</p>
+    <p>The contractor sets up a dedicated staging area with mud boxes, mixing equipment, and finishing tools organized for efficient workflow. Joint compound is mixed to the proper consistency—toothpaste-like for embedding tape, slightly thinner for filling, and very smooth for finishing coats. Taping knives, ranging from 6-inch to 14-inch widths, are inspected for sharp, unblemished edges that will produce smooth applications without streaks or ridges.</p>
+
+    <h4>Taping Process and First Coat Application</h4>
+    <p>The taping process begins with the contractor applying a thin bed layer of joint compound (typically lightweight all-purpose compound) to the joint using a 6-inch knife. Paper tape is immediately centered over the joint and embedded into the compound using firm pressure from the center outward, removing excess compound and air bubbles. The contractor wipes the tape with a finishing knife, leaving a thin, smooth layer of compound over the tape—enough to bond the tape and fill the recessed edge, but not so much that excessive sanding will be required.</p>
+    <p>For butt joints (where panel ends meet without a tapered edge), the contractor applies compound, embeds tape, and immediately applies a wider coat (10 to 12 inches) to begin transitioning the flat joint surface to the plane of the adjacent panels. These joints require more compound and wider feathering than tapered joints due to the lack of recessed edges. Inside corners receive paper tape folded along its center crease, embedded in compound applied to both walls simultaneously. Outside corners are protected with metal or plastic corner bead fastened to framing before compound application.</p>
+    <p>All fastener heads receive a first coat of compound, applied with a 6-inch knife in a cross-stroke pattern—one stroke perpendicular to the previous—to fill the dimple completely. The contractor inspects all taping work while still wet, looking for loose tape, air bubbles, or insufficient compound coverage. Any defects are corrected immediately before the compound begins to set. The first coat is allowed to dry completely (typically 24 hours in normal conditions) before any second-coat work begins.</p>
+
+    <h4>Fill Coat and Surface Leveling Procedures</h4>
+    <p>Once the first coat is fully dried, the contractor applies the fill coat (second coat) using progressively wider knives—8 to 10 inches for tapered joints and 12 to 14 inches for butt joints. The objective is to level the surface by applying compound beyond the edges of the first coat, feathering the edges into the existing drywall surface. The contractor applies compound in thin layers, using firm pressure on the outer edges of the knife to feather the compound and lighter pressure in the center to deposit material.</p>
+    <p>For butt joints, the second coat extends 16 to 18 inches wide, building a gradual transition that makes the joint invisible under critical lighting. Inside corners receive a second coat on each wall independently, typically using an 8-inch knife to smooth and feather the corner into the wall surfaces. Outside corners with metal bead receive compound applications 8 to 10 inches wide, completely covering the bead flanges and transitioning smoothly to the adjacent surfaces.</p>
+    <p>The contractor applies a second coat to all fastener locations, ensuring that dimples are completely filled level with the surrounding surface. This coat is applied with slightly thinner compound than the first coat, promoting easier sanding and smoother final finish. As with the first coat, the contractor inspects all work before moving to the next area, checking for uniform coverage, proper feathering, and absence of tool marks or ridges. Complete drying (another 24 hours) is required before the finish coat.</p>
+
+    <h4>Finish Coat Application and Surface Perfection</h4>
+    <p>The finish coat (third coat) represents the contractor's final opportunity to create a perfectly smooth surface. Using 10 to 12-inch knives for tapered joints and 14 to 16-inch knives for butt joints, the contractor applies a very thin skim coat of compound, extending slightly beyond the second coat edges. The compound is mixed to a thinner consistency than previous coats—the objective is to fill any remaining imperfections and create an ultra-smooth, feathered transition.</p>
+    <p>The contractor employs expert knife technique: maintaining consistent pressure across the full blade width, overlapping each stroke slightly, and making smooth, continuous passes without stops or hesitations that create ridges. Lighting is critical during this phase—the contractor uses work lights positioned to cast raking light across surfaces, revealing any imperfections, ridges, or low spots that require attention. These are addressed immediately with additional compound applications, tooled smooth before the coat sets.</p>
+    <p>For Level 5 finishes, the contractor applies a skim coat of joint compound over all surfaces—not just joints and fasteners. This coat, rolled or troweled to 1/32-inch thickness, fills paper texture and creates an absolutely uniform surface for paint application. The technique demands expertise: working in small sections, applying compound evenly, and tooling it smooth before it begins to set. Level 5 finishing virtually eliminates the risk of joint photographing (joints becoming visible) under critical lighting conditions.</p>
+
+    <h4>Sanding Techniques and Surface Preparation</h4>
+    <p>Once all coats are completely dry (typically 48 hours after the final application), the contractor begins sanding operations. Using pole sanders equipped with drywall-specific sanding screens or sandpaper (120 to 150 grit), the contractor employs light, circular motions to smooth any ridges, tool marks, or imperfections. The objective is not to sand through the compound to the tape or paper, but rather to create smooth transitions and perfect surfaces.</p>
+    <p>The contractor implements comprehensive dust control measures: closing HVAC registers, sealing doorways with plastic sheeting, and using vacuum-equipped pole sanders or HEPA-filtered dust extraction systems when possible. Even with dust control, drywall sanding generates significant fine dust that penetrates everywhere—the contractor coordinates with the Construction Manager to ensure that no finish work (flooring, cabinets, trim) is installed before thorough post-sanding cleaning.</p>
+    <p>After sanding, the contractor inspects all surfaces under raking light, checking for any remaining imperfections. Touch-up compound applications are made to any defects discovered, allowed to dry, and spot-sanded. The final step is thorough cleaning: all dust is swept, vacuumed, and wiped from surfaces using damp cloths or tack cloths. Dust on surfaces must be completely removed before painting begins—even microscopic dust particles will telegraph through paint, creating a rough, unacceptable finish.</p>
+
+    <h3>Municipal Building Inspector Verification and Code Compliance</h3>
+    
+    <h4>Insulation Inspection Protocols and Thermal Envelope Verification</h4>
+    <p>The insulation inspection represents a mandatory hold point in the construction schedule—drywall cannot be installed until the inspector approves the insulation installation. The inspector verifies that insulation type, R-value, and installation meet the requirements specified in the approved energy calculations and plans. For batt insulation, the inspector checks that cavities are completely filled without gaps or compression, that batts are split and fitted around obstructions, and that vapor retarders (if required) face the proper direction.</p>
+    <p>The inspector examines critical detail areas that commonly fail: insulation must extend into band joist areas; must fill behind electrical boxes and plumbing penetrations; must cover the top plates of exterior walls in attic spaces; and must be installed in all exterior walls, including garage walls and knee walls. In cathedral ceilings, the inspector verifies that ventilation baffles maintain airspace between insulation and roof deck, and that insulation thickness doesn't compromise required ventilation clearance.</p>
+    <p>For blown insulation, the inspector measures actual installed depth at multiple locations, comparing measurements against depth markers and calculating whether the installed depth achieves the required R-value based on manufacturer's coverage tables. For spray foam applications, the inspector verifies installed thickness, checks that foam is trimmed flush with framing, and confirms that the foam type (open-cell or closed-cell) matches plan specifications. Any deficiencies identified during inspection must be corrected before approval is granted.</p>
+
+    <h4>Energy Code Compliance and Blower Door Testing</h4>
+    <p>In jurisdictions requiring energy code compliance verification, the Construction Manager coordinates blower door testing—a diagnostic procedure that quantifies air leakage through the building envelope. The test is typically performed after insulation is installed and before drywall, allowing any identified air leakage paths to be sealed before they become inaccessible. A certified testing technician installs a calibrated fan in an exterior doorway, depressurizes the house to a standard pressure (typically 50 Pascals), and measures the airflow required to maintain that pressure.</p>
+    <p>Test results are expressed in air changes per hour at 50 Pascals (ACH50) or cubic feet per minute at 50 Pascals (CFM50). Current energy codes typically require 3 to 5 ACH50 for new homes, depending on climate zone and program requirements. If test results exceed allowable limits, the technician uses specialized smoke generators or thermal imaging to locate major leakage paths. Common leakage locations include: electrical penetrations in exterior walls; top plates of walls into attic spaces; recessed light fixtures; plumbing penetrations; rim joist areas; and air handler closets.</p>
+    <p>The Construction Manager coordinates any required remediation work with appropriate trades: the insulation contractor seals accessible penetrations with spray foam; the framer caulks top plates and sole plates; the electrician seals electrical box penetrations. After remediation, the house is retested to verify compliance. Passing the air leakage test demonstrates that the thermal envelope is complete and effective—the combination of insulation (to slow heat transfer) and air sealing (to prevent air leakage) creates the energy-efficient building envelope that modern codes demand.</p>
+
+    <h3>Construction Manager Project Coordination and Quality Assurance</h3>
+    
+    <h4>Schedule Optimization and Trade Coordination</h4>
+    <p>The Construction Manager schedules the insulation contractor immediately after the rough-in inspection passes and all mechanical, electrical, and plumbing work is complete and tested. Insulation cannot be installed until all work inside wall and ceiling cavities is finished and inspected—installing insulation before MEP rough-in is complete creates safety hazards and quality problems. The CM verifies that all air sealing work specified in the energy calculations is completed before insulation: caulking of top plates, sealing of penetrations, and installation of gaskets or caulk behind electrical boxes.</p>
+    <p>The CM schedules the insulation inspection immediately upon completion of insulation installation, understanding that this inspection is the critical path item that controls when drywall installation can begin. The CM conducts a pre-inspection walkthrough with the insulation contractor, identifying and correcting any potential deficiencies before calling for the official inspection. This proactive quality control prevents inspection failures that delay the schedule and increase costs.</p>
+    <p>Once the insulation inspection passes, the CM immediately schedules the drywall contractor. Drywall hanging typically takes 2 to 4 days for an average home, followed by 1 day for taping, 1 day drying, 1 day for second coat, 1 day drying, 1 day for third coat, 1 day drying, and 1 to 2 days for sanding and cleanup—a total of 8 to 12 days from start to finish. The CM builds this timeline into the master schedule, coordinating with all downstream trades (painters, trim carpenters, flooring installers) who are waiting for clean, finished surfaces.</p>
+
+    <h4>Quality Control Inspection Protocols</h4>
+    <p>The CM performs detailed quality inspections at multiple points during the insulation and drywall phase. During insulation installation, the CM verifies complete coverage, proper R-value achievement, correct vapor barrier orientation, and absence of compression or gaps. The CM pays special attention to difficult-to-inspect areas: top plates of walls, band joists, behind electrical boxes, and around window and door frames—locations where installers commonly miss coverage and where the building inspector will certainly look.</p>
+    <p>During drywall finishing, the CM inspects each coat after application but before the next coat begins. The CM checks for: complete tape coverage of all joints; absence of loose or bubbling tape; proper compound application over fasteners; absence of overworked compound (which creates weak joints); and proper feathering at joint edges. The CM uses portable work lights to cast raking light across surfaces, revealing imperfections invisible under normal lighting. Any deficiencies are documented and communicated to the drywall contractor for correction before proceeding.</p>
+    <p>After final sanding, the CM performs a comprehensive quality walk-through with the drywall contractor, examining all surfaces under portable work lights. The inspection criteria include: smooth, level joints with no visible ridges or depressions; completely filled and sanded fastener dimples; smooth, straight corner beads with no visible bead edges; absence of cracks, dents, or damage; and complete dust removal from all surfaces. Any defects are marked for touch-up and re-inspection. The CM doesn't release the drywall contractor until all surfaces meet the specified finish level and are ready for painting.</p>
+
+    <h4>Drying Time Management and Climate Control</h4>
+    <p>Joint compound drying times directly impact the construction schedule, and the CM actively manages environmental conditions to optimize drying. Each coat of joint compound requires 24 hours minimum drying time under ideal conditions (70°F temperature, 50% relative humidity). In cold weather, drying times can extend to 48 hours or more. In humid conditions, drying is even slower. The CM coordinates with the HVAC contractor to provide temporary heat during winter months, maintaining interior temperature at 65°F minimum.</p>
+    <p>The CM ensures adequate ventilation to remove moisture released during compound drying—opening windows, operating fans, or running the permanent HVAC system (if operational) in ventilation mode. The CM inspects compound applications before authorizing the next coat, using hands-on verification (compound should be completely dry to the touch with no cool spots indicating residual moisture) and visual inspection (dry compound is uniformly light gray; damp compound appears darker). Applying the next coat over incompletely dried compound results in cracking, prolonged drying times, and compromised joint strength.</p>
+    <p>The CM builds weather contingencies into the schedule, understanding that winter construction may require additional days between coats. The CM coordinates with the drywall contractor to sequence work efficiently: while compound dries in one area, the contractor moves to another area for taping, coating, or sanding operations. This productive use of drying time maximizes labor efficiency and minimizes schedule impact. The CM also manages expectations with the owner and downstream trades, communicating realistic completion dates that account for required drying periods.</p>
+
+    <h4>Dust Control and Indoor Air Quality Management</h4>
+    <p>Drywall sanding generates extraordinary amounts of fine gypsum dust that can damage mechanical equipment, contaminate finished surfaces, and create health hazards for workers. The CM implements comprehensive dust control protocols before sanding begins: HVAC system is turned off and all registers are sealed with tape and plastic to prevent dust infiltration into ductwork; doorways to adjacent spaces are sealed with plastic sheeting; and windows are opened to provide ventilation for dust that becomes airborne despite control measures.</p>
+    <p>The CM requires the drywall contractor to use dust extraction equipment whenever possible—pole sanders connected to HEPA-filtered vacuums capture the majority of dust at the source, dramatically reducing airborne particulates. Even with extraction equipment, significant dust is generated. The CM requires daily cleanup: sweeping and vacuuming all surfaces, removing dust accumulation from horizontal surfaces (window sills, stair treads, ledges), and damp-wiping surfaces to capture fine dust that dry sweeping misses.</p>
+    <p>The final cleanup after sanding completion is exhaustive: the CM inspects and requires thorough vacuuming of all surfaces including walls, ceilings, floors, window sills, door frames, and any installed fixtures. Dust that remains on surfaces will compromise paint adhesion and will be visible in the final finish. The CM conducts white-glove inspections—literally wiping surfaces with a white cloth to verify that no dust remains—before releasing the space to painters or other finish trades. The CM understands that this detailed dust removal is the foundation for quality finish work and is non-negotiable.</p>
+  </section>
+
+  <section class="conclusion-section">
+    <h2>Conclusion: Achieving Thermal Performance and Finish Excellence</h2>
+    <p>The insulation and drywall phase creates the building's thermal envelope and establishes the quality foundation for all interior finishes. Success requires the Construction Manager to coordinate specialized trade contractors, manage mandatory inspections, optimize drying schedules, implement rigorous quality control, and maintain dust control protocols. The thermal envelope's effectiveness—measured through R-values and air leakage testing—directly impacts the home's energy performance, comfort, and operating costs for its entire lifespan. The drywall finish quality—achieved through proper techniques, adequate drying, and expert sanding—creates the smooth, seamless surfaces that define interior visual quality. Mastery of this phase demonstrates the Construction Manager's ability to balance technical requirements, schedule optimization, and quality standards in creating homes that perform efficiently and look beautiful.</p>
+  </section>
+</div>
+    `,
+    order: 6
+  },
+  {
+    moduleNumber: 7,
+    title: "Interior Finishes",
+    description: "Bring the house to life with painting, trim, cabinets, flooring, and countertops that define the home's character.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Master interior painting and surface preparation</li>
+      <li>Understand trim and carpentry installation</li>
+      <li>Learn flooring installation techniques</li>
+      <li>Coordinate cabinet and countertop installation</li>
+      <li>Manage trade sequencing to protect finished surfaces</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This is where the house truly comes to life. The interior finishes give the house its character and style. This stage requires careful sequencing to protect finished surfaces from damage by subsequent trades.</p>
+
+    <h3>Painting Contractor Work</h3>
+    <h4>Surface Preparation</h4>
+    <p>All drywall surfaces are primed with a drywall primer/sealer. Any remaining imperfections are filled and sanded.</p>
+
+    <h4>Caulking</h4>
+    <p>Caulk is applied to all joints where trim will meet the walls and ceilings to create a seamless appearance.</p>
+
+    <h4>Painting</h4>
+    <p>Two coats of paint are typically applied to walls and ceilings. Trim is primed and painted (often before installation, or after).</p>
+
+    <h3>Carpentry Contractor Tasks</h3>
+    <h4>Interior Door Installation</h4>
+    <p>Pre-hung interior doors are set into the rough openings and shimmed to be level and plumb. Door casings (trim around the door) are installed.</p>
+
+    <h4>Baseboard and Trim Installation</h4>
+    <p>Baseboards are installed along the bottom of all walls. Crown molding (if specified) is installed where the walls meet the ceiling. Window sills and casings are installed.</p>
+
+    <h4>Cabinet Installation</h4>
+    <p>Kitchen cabinets are set in place, leveled, and secured to the walls. Bathroom vanities are installed.</p>
+
+    <h4>Shelving and Closet Systems</h4>
+    <p>Closet rods and shelving are installed.</p>
+
+    <h3>Flooring Contractor Work</h3>
+    <h4>Hardwood Flooring</h4>
+    <p>Hardwood planks are nailed or glued to the subfloor. The floor is sanded smooth and finished with stain and polyurethane.</p>
+
+    <h4>Tile Flooring</h4>
+    <p>Tile is set in thin-set mortar on the subfloor or a cement backer board. Grout is applied between the tiles and sealed.</p>
+
+    <h4>Vinyl or Laminate Flooring</h4>
+    <p>Vinyl planks or laminate flooring is installed as a floating floor over an underlayment.</p>
+
+    <h4>Carpet</h4>
+    <p>Carpet padding is laid down, and carpet is stretched and tacked into place.</p>
+
+    <h3>Countertop Fabricator Process</h3>
+    <h4>Templating</h4>
+    <p>After cabinets are installed, the fabricator creates a precise template of the countertop area.</p>
+
+    <h4>Fabrication</h4>
+    <p>The countertop (granite, quartz, laminate, etc.) is cut to size and edges are finished. Holes are cut for sinks and faucets.</p>
+
+    <h4>Installation</h4>
+    <p>The countertop is set on top of the cabinets and secured. Seams are joined and sealed.</p>
+
+    <h3>Construction Manager Role</h3>
+    <h4>Sequencing</h4>
+    <p>The CM carefully sequences the interior finish trades to minimize damage. Typically: paint first, then trim and cabinets, then flooring, then final paint touch-up.</p>
+
+    <h4>Protection</h4>
+    <p>The CM ensures that finished surfaces are protected. For example, hardwood floors are covered with cardboard or protective paper after installation.</p>
+
+    <h4>Quality Control</h4>
+    <p>The CM inspects all finish work for quality, ensuring paint is smooth, trim joints are tight, cabinets are level, and flooring is installed correctly.</p>
+
+    <h4>Material Coordination</h4>
+    <p>The CM ensures that all finish materials (paint colors, flooring, cabinets, countertops) are selected, ordered, and delivered on time.</p>
+  </section>
+</div>
+    `,
+    order: 7
+  },
+  {
+    moduleNumber: 8,
+    title: "Final Mechanicals & Exterior Completion",
+    description: "Complete all mechanical installations and exterior site work to make the house fully functional and ready for occupancy.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Master final electrical and plumbing fixture installation</li>
+      <li>Understand HVAC system startup and balancing</li>
+      <li>Learn concrete and landscaping completion</li>
+      <li>Navigate final mechanical inspections</li>
+      <li>Coordinate exterior site work and cleanup</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This stage involves the final installation of all mechanical fixtures and the completion of the exterior site work. The house is now fully functional and the property is taking its final form.</p>
+
+    <h3>Electrician Final Work</h3>
+    <h4>Device Installation</h4>
+    <p>Outlets, switches, and cover plates are installed in all electrical boxes. Light fixtures are installed in all locations. The doorbell, smoke detectors, and carbon monoxide detectors are installed and tested.</p>
+
+    <h4>Appliance Connections</h4>
+    <p>The electrician makes the final connections for hardwired appliances (oven, cooktop, dishwasher, garbage disposal).</p>
+
+    <h4>Panel Labeling</h4>
+    <p>All circuits in the electrical panel are clearly labeled.</p>
+
+    <h3>Plumber Final Installation</h3>
+    <h4>Fixture Installation</h4>
+    <p>Sinks, faucets, toilets, and showerheads are installed. The garbage disposal and dishwasher are connected. The washing machine hookups are completed.</p>
+
+    <h4>Water Heater</h4>
+    <p>The water heater is installed and connected to the water supply, drain, and power/gas.</p>
+
+    <h4>Testing</h4>
+    <p>All fixtures are tested for proper operation and leaks.</p>
+
+    <h3>HVAC Contractor Final Tasks</h3>
+    <h4>Register and Grille Installation</h4>
+    <p>Supply registers and return air grilles are installed in all rooms.</p>
+
+    <h4>Thermostat Installation</h4>
+    <p>The thermostat is installed and wired to the furnace/air handler.</p>
+
+    <h4>System Startup and Testing</h4>
+    <p>The HVAC system is started up, tested, and balanced to ensure proper airflow and temperature control in all rooms.</p>
+
+    <h3>Concrete Contractor Work</h3>
+    <h4>Driveway and Walkways</h4>
+    <p>Forms are set for the driveway and walkways. A gravel base is compacted, and concrete is poured and finished. Control joints are cut to control cracking.</p>
+
+    <h4>Patio</h4>
+    <p>If a concrete patio is specified, it is poured and finished.</p>
+
+    <h3>Landscaper Responsibilities</h3>
+    <h4>Final Grading</h4>
+    <p>The lot is graded to its final contours, ensuring proper drainage away from the house. Topsoil is spread in planting areas.</p>
+
+    <h4>Irrigation System</h4>
+    <p>An underground sprinkler system is installed (if specified).</p>
+
+    <h4>Planting</h4>
+    <p>Sod, grass seed, trees, shrubs, and other plants are installed according to the landscape plan.</p>
+
+    <h4>Mulch and Edging</h4>
+    <p>Mulch is spread in planting beds, and edging is installed to define borders.</p>
+
+    <h3>City Inspector Requirements</h3>
+    <h4>Final Mechanical Inspections</h4>
+    <ul>
+      <li><strong>Final Electrical:</strong> The inspector tests outlets for proper wiring and grounding, checks that all fixtures are installed correctly, and verifies panel labeling.</li>
+      <li><strong>Final Plumbing:</strong> The inspector checks all fixtures for proper installation and operation, tests for leaks, and verifies proper venting.</li>
+      <li><strong>Final HVAC:</strong> The inspector verifies proper installation of equipment, ductwork, and venting, and may test the system for operation.</li>
+    </ul>
+
+    <h4>Final Grading Inspection</h4>
+    <p>The inspector verifies that the lot is graded to drain water away from the foundation and that erosion control measures are in place.</p>
+
+    <h3>Construction Manager Role</h3>
+    <h4>Scheduling</h4>
+    <p>The CM schedules the final installations for all mechanical trades and coordinates the concrete and landscaping work.</p>
+
+    <h4>Inspection Coordination</h4>
+    <p>The CM schedules all final mechanical inspections and the grading inspection.</p>
+
+    <h4>System Testing</h4>
+    <p>The CM ensures that all systems (electrical, plumbing, HVAC) are fully tested and operational.</p>
+
+    <h4>Site Cleanup</h4>
+    <p>The CM oversees the cleanup of the construction site, including removal of all debris, equipment, and temporary structures.</p>
+  </section>
+</div>
+    `,
+    order: 8
+  },
+  {
+    moduleNumber: 9,
+    title: "Final Finishes & Cleaning",
+    description: "Complete all final details including appliance installation, hardware, touch-up painting, and thorough cleaning.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Understand appliance installation and testing procedures</li>
+      <li>Master hardware installation techniques</li>
+      <li>Learn final paint touch-up and quality control</li>
+      <li>Implement comprehensive cleaning protocols</li>
+      <li>Manage punch list creation and completion</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This stage involves the final details that make the house move-in ready. Every last item is installed, every surface is cleaned, and the house is prepared for the homeowner.</p>
+
+    <h3>Appliance Installer Work</h3>
+    <h4>Appliance Delivery and Installation</h4>
+    <p>Major appliances (refrigerator, stove, dishwasher, microwave, washer, dryer) are delivered and installed. All appliances are tested for proper operation.</p>
+
+    <h3>Hardware Installer Tasks</h3>
+    <h4>Door Hardware</h4>
+    <p>Door handles, knobs, and locks are installed on all interior and exterior doors.</p>
+
+    <h4>Cabinet Hardware</h4>
+    <p>Knobs and pulls are installed on all cabinet doors and drawers.</p>
+
+    <h4>Bathroom Accessories</h4>
+    <p>Towel bars, toilet paper holders, and other bathroom accessories are installed.</p>
+
+    <h3>Painting Contractor Final Work</h3>
+    <h4>Final Touch-Up</h4>
+    <p>The painter returns to touch up any areas that were damaged or marked during the installation of trim, cabinets, or flooring. All walls, ceilings, and trim are inspected and any imperfections are corrected.</p>
+
+    <h3>Cleaning Crew Responsibilities</h3>
+    <h4>Construction Cleaning</h4>
+    <p>All construction dust and debris are removed from the entire house. All surfaces (countertops, cabinets, fixtures) are wiped down. Floors are thoroughly cleaned (swept, mopped, or vacuumed). Windows are cleaned inside and out. All stickers and protective coverings are removed from appliances and fixtures.</p>
+
+    <h3>Construction Manager Role</h3>
+    <h4>Punch List Creation</h4>
+    <p>The CM walks the entire house with a detailed checklist, identifying any items that need correction or completion. This "punch list" is given to the appropriate contractors.</p>
+
+    <h4>Punch List Management</h4>
+    <p>The CM ensures that all punch list items are completed.</p>
+
+    <h4>Final Preparations</h4>
+    <p>The CM ensures the house is spotless and ready for the final walkthrough with the homeowner.</p>
+
+    <h4>Documentation</h4>
+    <p>The CM compiles all warranties, manuals, and maintenance information for the homeowner.</p>
+  </section>
+</div>
+    `,
+    order: 9
+  },
+  {
+    moduleNumber: 10,
+    title: "Final Walkthrough & Handover",
+    description: "Complete the final inspection, obtain certificate of occupancy, and conduct homeowner orientation and handover.",
+    content: `
+<div class="module-content">
+  <section class="learning-objectives">
+    <h2>Learning Objectives</h2>
+    <ul>
+      <li>Navigate the final building inspection process</li>
+      <li>Understand certificate of occupancy requirements</li>
+      <li>Master homeowner orientation and walkthrough procedures</li>
+      <li>Learn project closeout and documentation</li>
+      <li>Complete successful project handover</li>
+    </ul>
+  </section>
+
+  <section class="content-section">
+    <h2>Overview</h2>
+    <p>This is the culmination of the entire construction process. The house is inspected one last time by the city, and then the keys are handed over to the homeowner.</p>
+
+    <h3>Homeowner Responsibilities</h3>
+    <h4>Final Walkthrough</h4>
+    <p>The homeowner walks through the entire house with the Construction Manager. They inspect all rooms, systems, and finishes. They test all appliances, fixtures, lights, and systems. They identify any items that need correction and add them to the punch list.</p>
+
+    <h4>Homeowner Orientation</h4>
+    <p>The CM provides an orientation, explaining how to operate all systems and appliances. The homeowner receives all keys, garage door openers, and alarm codes.</p>
+
+    <h4>Documentation Receipt</h4>
+    <p>The homeowner receives all warranties, manuals, and maintenance schedules. They receive a copy of the final approved plans and the Certificate of Occupancy.</p>
+
+    <h3>City Inspector Final Work</h3>
+    <h4>Final Building Inspection</h4>
+    <p>This is the last and most comprehensive inspection. The inspector walks through the entire house, checking that all work is complete and meets code. They verify that all previous inspections have been passed. They check for proper egress (emergency exits) from bedrooms. They verify that smoke and carbon monoxide detectors are installed and functional. They check handrails, guardrails, and other safety features.</p>
+
+    <h4>Certificate of Occupancy (CO)</h4>
+    <p>If the final inspection passes, the inspector issues a Certificate of Occupancy, which legally allows the homeowner to move in and occupy the house.</p>
+
+    <h3>Construction Manager Final Role</h3>
+    <h4>Pre-Final Inspection</h4>
+    <p>The CM conducts a thorough inspection of the house before calling for the final city inspection to ensure everything is ready.</p>
+
+    <h4>Final Inspection Scheduling</h4>
+    <p>The CM schedules the final building inspection with the city. They are present during the inspection to answer questions and address any issues.</p>
+
+    <h4>Final Walkthrough Coordination</h4>
+    <p>The CM schedules and conducts the final walkthrough with the homeowner. They explain all systems and answer all questions.</p>
+
+    <h4>Punch List Completion</h4>
+    <p>Any items identified during the final walkthrough or final inspection are added to the punch list and completed promptly.</p>
+
+    <h4>Certificate of Occupancy</h4>
+    <p>The CM obtains the Certificate of Occupancy from the city and provides a copy to the homeowner.</p>
+
+    <h4>Project Closeout</h4>
+    <p>The CM completes all final paperwork, including lien releases from all contractors and suppliers. They ensure all warranties are transferred to the homeowner. They provide the homeowner with a complete set of as-built plans (if any changes were made during construction).</p>
+
+    <h4>Handover</h4>
+    <p>The CM officially hands over the completed house to the homeowner, marking the successful completion of the project.</p>
+  </section>
+</div>
+    `,
+    order: 10
+  }
+];
+
+const quizQuestions = [
+  // Module 1: Site Preparation & Pre-Construction (20 questions)
+  { moduleNumber: 1, question: "What is the typical minimum grubbing depth requirement for residential construction in areas that will support structures?", optionA: "6 to 12 inches below proposed grade", optionB: "18 to 36 inches below proposed grade", optionC: "48 to 60 inches below proposed grade", optionD: "12 to 18 inches below proposed grade", correct: "B" },
+  { moduleNumber: 1, question: "Which federal regulation mandates that construction sites disturbing one acre or more must obtain permit coverage and implement a SWPPP?", optionA: "Occupational Safety and Health Act (OSHA)", optionB: "Clean Water Act through the NPDES program", optionC: "National Environmental Policy Act (NEPA)", optionD: "Resource Conservation and Recovery Act (RCRA)", correct: "B" },
+  { moduleNumber: 1, question: "What is the required accuracy tolerance for foundation layout in residential construction?", optionA: "Within 1 inch", optionB: "Within 1/4 inch", optionC: "Within 1/2 inch", optionD: "Within 1/8 inch", correct: "B" },
+  { moduleNumber: 1, question: "How deep must silt fence fabric be trenched and buried to ensure an effective seal against sediment passage?", optionA: "3 inches", optionB: "6 inches", optionC: "12 inches", optionD: "4 inches", correct: "B" },
+  { moduleNumber: 1, question: "What is the typical compaction requirement for fill material beneath foundations and pavements, expressed as a percentage of Modified Proctor density?", optionA: "85% to 90%", optionB: "90% to 95%", optionC: "95% to 98%", optionD: "98% to 100%", correct: "C" },
+  { moduleNumber: 1, question: "What is the minimum drainage slope requirement for the first 10 feet extending from a foundation perimeter?", optionA: "1% grade (1 foot per 100 feet)", optionB: "2% grade (2 feet per 100 feet)", optionC: "5% grade (5 feet per 100 feet)", optionD: "0.5% grade (0.5 feet per 100 feet)", correct: "B" },
+  { moduleNumber: 1, question: "What is the maximum thickness of soil lifts before compaction in structural fill areas?", optionA: "4 to 6 inches", optionB: "6 to 8 inches", optionC: "8 to 12 inches", optionD: "12 to 18 inches", correct: "C" },
+  { moduleNumber: 1, question: "Which professional is legally responsible for establishing property boundaries and monumenting property corners?", optionA: "Civil Engineer (PE)", optionB: "Registered Professional Land Surveyor (RPLS)", optionC: "Construction Manager (CM)", optionD: "Geotechnical Engineer", correct: "B" },
+  { moduleNumber: 1, question: "What is the typical aggregate size range for constructing a Stabilized Construction Entrance (SCE)?", optionA: "1/2 to 1 inch diameter", optionB: "2 to 4 inches diameter", optionC: "6 to 8 inches diameter", optionD: "1 to 2 inches diameter", correct: "B" },
+  { moduleNumber: 1, question: "At what depth does OSHA require protective systems (sloping, benching, shoring, or shielding) for excavations?", optionA: "Exceeding 3 feet", optionB: "Exceeding 4 feet", optionC: "Exceeding 5 feet", optionD: "Exceeding 6 feet", correct: "C" },
+  { moduleNumber: 1, question: "What is the maximum penalty amount per day for willful or repeat violations of OSHA standards?", optionA: "$15,625", optionB: "$50,000", optionC: "$156,259", optionD: "$75,000", correct: "C" },
+  { moduleNumber: 1, question: "Which document serves as the legal authorization to commence construction and must be posted at the site?", optionA: "Stormwater Pollution Prevention Plan (SWPPP)", optionB: "Notice to Proceed (NTP)", optionC: "Building Permit", optionD: "Certificate of Occupancy", correct: "C" },
+  { moduleNumber: 1, question: "Where should tree protection fencing be installed relative to trees designated for preservation?", optionA: "At the tree trunk", optionB: "5 feet from the trunk", optionC: "At or beyond the dripline", optionD: "10 feet from the trunk", correct: "C" },
+  { moduleNumber: 1, question: "What is the typical range for temporary electrical service size on construction sites?", optionA: "50 to 100 amperes", optionB: "100 to 400 amperes", optionC: "400 to 600 amperes", optionD: "60 to 200 amperes", correct: "B" },
+  { moduleNumber: 1, question: "What percentage of organic matter by dry weight typically renders soil unacceptable for use beneath foundations?", optionA: "More than 1%", optionB: "More than 3%", optionC: "More than 5%", optionD: "More than 10%", correct: "C" },
+  { moduleNumber: 1, question: "What is the typical validity period for building permits before they expire if substantial progress is not maintained?", optionA: "Six months", optionB: "One year", optionC: "Two years", optionD: "18 months", correct: "B" },
+  { moduleNumber: 1, question: "Which laboratory test establishes the maximum dry density achievable for soil compaction specifications?", optionA: "Atterberg Limits Test", optionB: "Grain Size Analysis", optionC: "Standard or Modified Proctor Test", optionD: "Consolidation Test", correct: "C" },
+  { moduleNumber: 1, question: "What is the required ratio of portable restrooms to workers on construction sites with up to 200 workers?", optionA: "One unit per 10 workers", optionB: "One unit per 20 workers", optionC: "One unit per 30 workers", optionD: "One unit per 50 workers", correct: "B" },
+  { moduleNumber: 1, question: "When must erosion control inspections be conducted following rainfall events?", optionA: "Within 12 hours following 0.25 inches of rainfall", optionB: "Within 24 hours following 0.5 inches of rainfall", optionC: "Within 48 hours following 1 inch of rainfall", optionD: "Within 24 hours following 0.25 inches of rainfall", correct: "B" },
+  { moduleNumber: 1, question: "What term describes the strategy of minimizing soil import/export costs by balancing cut and fill volumes on a site?", optionA: "Mass haul optimization", optionB: "Earthwork balance", optionC: "Cut-fill equilibrium", optionD: "Volumetric neutrality", correct: "B" },
+
+  // Module 2: Foundation (20 questions)
+  { moduleNumber: 2, question: "Why is undisturbed soil critical for foundation bearing capacity?", optionA: "It has better drainage properties than compacted fill", optionB: "It has been naturally compacted over thousands of years, providing predictable bearing capacity", optionC: "It is easier to excavate than disturbed soil", optionD: "It prevents frost heave more effectively", correct: "B" },
+  { moduleNumber: 2, question: "What is the minimum slope requirement for 3-inch and 4-inch residential drain pipes?", optionA: "1/8 inch per foot", optionB: "1/4 inch per foot", optionC: "1/2 inch per foot", optionD: "1 inch per foot", correct: "B" },
+  { moduleNumber: 2, question: "What is the primary purpose of rebar in concrete foundations?", optionA: "To increase the concrete's compressive strength", optionB: "To add tensile strength that concrete naturally lacks", optionC: "To prevent the concrete from shrinking during curing", optionD: "To reduce the amount of concrete needed", correct: "B" },
+  { moduleNumber: 2, question: "Why must excavated soil never be stockpiled close to the edge of the excavation?", optionA: "It interferes with equipment access", optionB: "It prevents proper drainage of the excavation", optionC: "The weight can cause excavation walls to collapse", optionD: "It violates environmental regulations", correct: "C" },
+  { moduleNumber: 2, question: "What is the typical frost line depth range in cold northern climates?", optionA: "12-24 inches", optionB: "24-36 inches", optionC: "36-48 inches", optionD: "48-60 inches or more", correct: "D" },
+  { moduleNumber: 2, question: "What must be done before calling for a footing inspection?", optionA: "Pour the concrete and wait 24 hours", optionB: "Complete forms, install rebar, and ensure proper excavation conditions", optionC: "Backfill around the excavation perimeter", optionD: "Install the foundation drainage system", correct: "B" },
+  { moduleNumber: 2, question: "What is the difference between dampproofing and waterproofing?", optionA: "Dampproofing is applied to interior walls; waterproofing to exterior walls", optionB: "Dampproofing resists moisture but not hydrostatic pressure; waterproofing resists both", optionC: "Dampproofing is permanent; waterproofing requires periodic reapplication", optionD: "There is no difference—the terms are interchangeable", correct: "B" },
+  { moduleNumber: 2, question: "Why is under-slab plumbing considered 'point of no return' work?", optionA: "It must be completed within 24 hours", optionB: "Once the slab is poured, the pipes are permanently inaccessible except through demolition", optionC: "It cannot be inspected before installation", optionD: "It requires specialized licensing", correct: "B" },
+  { moduleNumber: 2, question: "What is the minimum curing time before foundation walls should be backfilled?", optionA: "12 hours", optionB: "24 hours", optionC: "3-7 days", optionD: "28 days", correct: "C" },
+  { moduleNumber: 2, question: "What is the purpose of anchor bolts in foundation construction?", optionA: "To tie the foundation wall to the footing", optionB: "To secure the wood sill plate to the top of the foundation wall", optionC: "To attach waterproofing membranes", optionD: "To support rebar during concrete placement", correct: "B" },
+  { moduleNumber: 2, question: "Why should perforated foundation drain pipe have holes facing downward?", optionA: "To prevent roots from entering the pipe", optionB: "To collect water from the gravel bed below rather than allowing soil to enter from above", optionC: "To increase water flow velocity", optionD: "To make installation easier", correct: "B" },
+  { moduleNumber: 2, question: "What is honeycombing in concrete, and why is it a problem?", optionA: "Surface cracks from rapid drying; cosmetic issue only", optionB: "Voids and gaps in concrete from incomplete consolidation; significantly weakens the wall", optionC: "Discoloration from mineral deposits; affects appearance only", optionD: "Normal texture created by form patterns; not a defect", correct: "B" },
+  { moduleNumber: 2, question: "When must the building inspector approve the foundation before work continues?", optionA: "Only after the entire foundation is complete and backfilled", optionB: "Before concrete is poured in footings AND before backfilling/slab pour", optionC: "Only if problems are suspected", optionD: "After backfilling but before framing begins", correct: "B" },
+  { moduleNumber: 2, question: "What is the typical residential foundation wall thickness for single-story construction?", optionA: "4-6 inches", optionB: "6-8 inches", optionC: "8-10 inches", optionD: "10-12 inches", correct: "C" },
+  { moduleNumber: 2, question: "What test pressure is typically used for air testing under-slab plumbing?", optionA: "2 PSI", optionB: "5 PSI", optionC: "10 PSI", optionD: "15 PSI", correct: "B" },
+  { moduleNumber: 2, question: "Why is a vapor barrier placed under concrete slabs?", optionA: "To prevent concrete from bonding to the gravel", optionB: "To provide a smooth surface for concrete finishing", optionC: "To prevent ground moisture from migrating up through the slab into the building", optionD: "To add insulation value to the floor system", correct: "C" },
+  { moduleNumber: 2, question: "What is the construction manager's primary role during the foundation stage?", optionA: "To operate excavation equipment", optionB: "To pour and finish concrete personally", optionC: "To coordinate multiple trades, manage scheduling, ensure quality control, and handle inspections", optionD: "To approve building permits", correct: "C" },
+  { moduleNumber: 2, question: "Before the 811 utility locating service, what must be done before any excavation?", optionA: "Obtain a soil report", optionB: "Call to have underground utilities marked", optionC: "Schedule a pre-construction meeting", optionD: "Complete the building permit application", correct: "B" },
+  { moduleNumber: 2, question: "What is the purpose of control joints in concrete slabs?", optionA: "To separate different concrete pours", optionB: "To create planned weak points where cracking can occur in a controlled manner", optionC: "To provide expansion space for temperature changes", optionD: "To mark the location of under-slab plumbing", correct: "B" },
+  { moduleNumber: 2, question: "What is the typical compressive strength specification for residential foundation concrete?", optionA: "1000-2000 PSI", optionB: "2000-3000 PSI", optionC: "3000-4000 PSI", optionD: "5000-6000 PSI", correct: "C" },
+
+  // Module 3: Framing (20 questions)  
+  { moduleNumber: 3, question: "What is the maximum acceptable deviation for sill plate levelness over its entire length?", optionA: "1/4 inch", optionB: "1/8 inch", optionC: "1/2 inch", optionD: "1/16 inch", correct: "B" },
+  { moduleNumber: 3, question: "What is the minimum retention level required for pressure-treated sill plates rated for ground contact?", optionA: "0.25 pcf", optionB: "0.40 pcf", optionC: "0.60 pcf", optionD: "0.80 pcf", correct: "C" },
+  { moduleNumber: 3, question: "When installing floor joists, which direction should the crown (natural bow) face?", optionA: "Down toward the foundation", optionB: "Up toward the ceiling", optionC: "Alternating up and down", optionD: "Direction doesn't matter", correct: "B" },
+  { moduleNumber: 3, question: "What is the typical maximum spacing for anchor bolts securing the sill plate to the foundation?", optionA: "4 feet on center", optionB: "6 feet on center", optionC: "8 feet on center", optionD: "10 feet on center", correct: "B" },
+  { moduleNumber: 3, question: "What is the recommended waste factor to add when calculating lumber quantities for framing?", optionA: "5-8%", optionB: "10-15%", optionC: "20-25%", optionD: "30-35%", correct: "B" },
+  { moduleNumber: 3, question: "For professional framing, what is the maximum acceptable tolerance for walls to be out of plumb?", optionA: "1/8 inch over 8 feet", optionB: "1/4 inch over 8 feet", optionC: "1/2 inch over 8 feet", optionD: "3/4 inch over 8 feet", correct: "B" },
+  { moduleNumber: 3, question: "What fastening pattern is required for subfloor sheathing installation?", optionA: "4 inches on edges, 8 inches in field", optionB: "6 inches on edges, 12 inches in field", optionC: "8 inches on edges, 16 inches in field", optionD: "12 inches on edges, 24 inches in field", correct: "B" },
+  { moduleNumber: 3, question: "What is the purpose of installing sill seal gasket between the concrete foundation and sill plate?", optionA: "To make the sill plate level", optionB: "To prevent air infiltration and moisture transfer", optionC: "To increase the height of the foundation", optionD: "To provide additional structural strength", correct: "B" },
+  { moduleNumber: 3, question: "When measuring diagonals to check if a wall is square, what is the maximum acceptable difference between the two measurements?", optionA: "1/8 inch", optionB: "1/4 inch", optionC: "1/2 inch", optionD: "1 inch", correct: "B" },
+  { moduleNumber: 3, question: "What is the most critical reason for NEVER cutting or modifying engineered I-joists or trusses without approval?", optionA: "It voids the warranty", optionB: "It's more difficult than cutting dimensional lumber", optionC: "It can reduce load capacity by 50% or more and cause catastrophic failure", optionD: "It makes the joists look unprofessional", correct: "C" },
+  { moduleNumber: 3, question: "In the double top plate assembly, what is the minimum distance that joints must be offset between the upper and lower plates?", optionA: "24 inches", optionB: "36 inches", optionC: "48 inches", optionD: "60 inches", correct: "C" },
+  { moduleNumber: 3, question: "What is the primary structural function of wall sheathing on exterior walls?", optionA: "To provide a surface for painting", optionB: "To provide lateral (racking) resistance", optionC: "To increase insulation value", optionD: "To make walls look finished", correct: "B" },
+  { moduleNumber: 3, question: "Which component directly supports the header at a window or door opening?", optionA: "King studs", optionB: "Cripple studs", optionC: "Trimmer studs (jack studs)", optionD: "Bottom plate", correct: "C" },
+  { moduleNumber: 3, question: "What is the typical maximum span for a 2x10 floor joist at 16 inches on center (assuming Douglas Fir-Larch #2)?", optionA: "12'-6\"", optionB: "16'-5\"", optionC: "19'-11\"", optionD: "22'-0\"", correct: "B" },
+  { moduleNumber: 3, question: "Why must construction adhesive be applied to joist tops before subfloor installation?", optionA: "It makes installation faster", optionB: "It's required by building codes", optionC: "It significantly reduces floor squeaks and increases stiffness", optionD: "It prevents the subfloor from warping", correct: "C" },
+  { moduleNumber: 3, question: "What is the recommended header size for a 6-foot wide opening in a single-story load-bearing wall?", optionA: "Double 2x6", optionB: "Double 2x8", optionC: "Double 2x12 or LVL", optionD: "Triple 2x12", correct: "C" },
+  { moduleNumber: 3, question: "What is the Golden Rule of flashing installation for windows and doors?", optionA: "Use as much flashing as possible", optionB: "Upper layers always overlap lower layers", optionC: "Install flashing after the window", optionD: "Flashing should be visible from outside", correct: "B" },
+  { moduleNumber: 3, question: "How much gap should be left between subfloor panel edges perpendicular to joists to allow for expansion?", optionA: "No gap needed", optionB: "1/16 inch", optionC: "1/8 inch", optionD: "1/4 inch", correct: "C" },
+  { moduleNumber: 3, question: "What is one of the most common framing violations cited during municipal inspections?", optionA: "Using wrong lumber species", optionB: "Walls painted the wrong color", optionC: "Missing or improperly filled joist hanger nail holes", optionD: "Subfloor installed upside down", correct: "C" },
+  { moduleNumber: 3, question: "During the framing inspection, what is the inspector primarily verifying with the 'load path' check?", optionA: "The path workers take through the site", optionB: "How forces transfer from roof to foundation through all connections", optionC: "The route for material deliveries", optionD: "The location of temporary storage areas", correct: "B" },
+
+  // Module 4: Exterior Finishes (20 questions)
+  { moduleNumber: 4, question: "What is the minimum thickness requirement for OSB roof sheathing when rafters are spaced 16 inches on center?", optionA: "3/8 inch", optionB: "7/16 inch", optionC: "15/32 inch", optionD: "19/32 inch", correct: "B" },
+  { moduleNumber: 4, question: "According to the IRC, what is the standard fastener spacing for roof sheathing along panel edges?", optionA: "4 inches on center", optionB: "6 inches on center", optionC: "12 inches on center", optionD: "16 inches on center", correct: "B" },
+  { moduleNumber: 4, question: "Ice and water shield must extend at least how far inside the exterior wall line to provide adequate protection against ice dams?", optionA: "12 inches", optionB: "18 inches", optionC: "24 inches", optionD: "36 inches", correct: "C" },
+  { moduleNumber: 4, question: "What is the minimum horizontal overlap required when installing roofing underlayment in \"shingle fashion\"?", optionA: "1 inch", optionB: "2 inches", optionC: "4 inches", optionD: "6 inches", correct: "B" },
+  { moduleNumber: 4, question: "For standard three-tab asphalt shingles, what is the typical exposure distance?", optionA: "3 inches", optionB: "4 inches", optionC: "5 inches", optionD: "6 inches", correct: "C" },
+  { moduleNumber: 4, question: "Which ASTM D7158 wind resistance class is typically required for coastal hurricane zones?", optionA: "Class A (60 mph)", optionB: "Class D (90 mph)", optionC: "Class G (120 mph)", optionD: "Class H (150 mph)", correct: "D" },
+  { moduleNumber: 4, question: "What is the minimum width requirement for open metal valley flashing?", optionA: "12 inches", optionB: "18 inches", optionC: "24 inches", optionD: "36 inches", correct: "C" },
+  { moduleNumber: 4, question: "Step flashing pieces must NEVER be:", optionA: "Installed with each shingle course", optionB: "Made from galvanized metal", optionC: "Nailed through both legs simultaneously", optionD: "Overlapped by the subsequent piece", correct: "C" },
+  { moduleNumber: 4, question: "Building codes mandate that a cricket must be installed on the upslope side of chimneys that exceed what width perpendicular to the roof slope?", optionA: "18 inches", optionB: "24 inches", optionC: "30 inches", optionD: "36 inches", correct: "C" },
+  { moduleNumber: 4, question: "What is the standard code-required ventilation ratio for attic spaces (NFVA to attic floor area)?", optionA: "1:100", optionB: "1:150", optionC: "1:200", optionD: "1:300", correct: "B" },
+  { moduleNumber: 4, question: "Which of the following is NOT one of the four primary moisture transport mechanisms in building envelopes?", optionA: "Bulk water intrusion", optionB: "Capillary action", optionC: "Thermal conduction", optionD: "Vapor diffusion", correct: "C" },
+  { moduleNumber: 4, question: "What is the optimal vapor permeability range (in perms) for weather-resistive barriers in most North American climates?", optionA: "1 to 5 perms", optionB: "5 to 50 perms", optionC: "50 to 100 perms", optionD: "100 to 200 perms", correct: "B" },
+  { moduleNumber: 4, question: "When installing weather-resistive barrier tape, what is the minimum required peel strength per ASTM D3330?", optionA: "5 pounds per inch", optionB: "10 pounds per inch", optionC: "15 pounds per inch", optionD: "20 pounds per inch", correct: "C" },
+  { moduleNumber: 4, question: "In the proper sequence for window opening flashing, which component must be installed FIRST?", optionA: "Head flashing", optionB: "Jamb flashing", optionC: "Sill pan flashing", optionD: "All components installed simultaneously", correct: "C" },
+  { moduleNumber: 4, question: "A 12-foot vinyl siding panel may expand or contract by approximately how much between winter minimum and summer maximum temperatures?", optionA: "1/8 inch", optionB: "1/4 inch", optionC: "1/2 inch or more", optionD: "1 inch or more", correct: "C" },
+  { moduleNumber: 4, question: "When installing vinyl siding, fasteners should be left with approximately how much clearance between the fastener head and the siding surface?", optionA: "Driven tight against the surface", optionB: "1/64 inch (thickness of paper)", optionC: "1/32 inch (thickness of a dime)", optionD: "1/16 inch (thickness of a penny)", correct: "C" },
+  { moduleNumber: 4, question: "What is the primary safety concern when cutting fiber cement siding that requires OSHA-mandated engineering controls or respiratory protection?", optionA: "Asbestos exposure", optionB: "Respirable crystalline silica", optionC: "Lead dust", optionD: "Formaldehyde vapors", correct: "B" },
+  { moduleNumber: 4, question: "What is the minimum clearance required between the bottom edge of fiber cement siding and grade level or paved surfaces?", optionA: "2 inches", optionB: "4 inches", optionC: "6 inches", optionD: "8 inches", correct: "C" },
+  { moduleNumber: 4, question: "For masonry veneer construction, corrugated metal ties must be installed at what maximum spacing?", optionA: "16 inches horizontally, 12 inches vertically", optionB: "18 inches horizontally, 16 inches vertically", optionC: "24 inches horizontally, 16 inches vertically", optionD: "32 inches horizontally, 24 inches vertically", correct: "C" },
+  { moduleNumber: 4, question: "According to OSHA regulations, fall protection is mandatory when workers operate at heights of how many feet or more above a lower level?", optionA: "4 feet", optionB: "6 feet", optionC: "8 feet", optionD: "10 feet", correct: "B" },
+
+  // Module 5: Rough-In Mechanicals (20 questions)
+  { moduleNumber: 5, question: "What three major trades are involved in mechanical rough-in?", optionA: "Framing, roofing, siding", optionB: "HVAC, plumbing, electrical", optionC: "Foundation, framing, roofing", optionD: "Painting, flooring, trim", correct: "B" },
+  { moduleNumber: 5, question: "Where is the furnace typically installed?", optionA: "Always in the attic", optionB: "Mechanical room, basement, or attic", optionC: "Always in the garage", optionD: "Always in the crawl space", correct: "B" },
+  { moduleNumber: 5, question: "What is used to seal duct joints to prevent air leakage?", optionA: "Cloth duct tape", optionB: "Mastic or metal tape", optionC: "Electrical tape", optionD: "Plastic wrap", correct: "B" },
+  { moduleNumber: 5, question: "What does DWV stand for in plumbing?", optionA: "Drain, Water, Vent", optionB: "Drain, Waste, and Vent", optionC: "Deep, Wide, Vertical", optionD: "Domestic Water Valve", correct: "B" },
+  { moduleNumber: 5, question: "What is the typical material for water supply lines?", optionA: "PVC only", optionB: "PEX, copper, or CPVC", optionC: "Cast iron only", optionD: "Galvanized steel only", correct: "B" },
+  { moduleNumber: 5, question: "Why are vent pipes run through the roof?", optionA: "For decoration", optionB: "Allow sewer gases to escape and equalize pressure", optionC: "Provide ventilation for the house", optionD: "Support the roof structure", correct: "B" },
+  { moduleNumber: 5, question: "Where is the main electrical panel typically installed?", optionA: "Always in the attic", optionB: "Garage, basement, or utility room", optionC: "Always outside", optionD: "Always in the kitchen", correct: "B" },
+  { moduleNumber: 5, question: "What type of cable is typically used for electrical wiring?", optionA: "Coaxial cable", optionB: "Romex cable", optionC: "Fiber optic cable", optionD: "Telephone cable", correct: "B" },
+  { moduleNumber: 5, question: "For a 200-ampere residential electrical service, what is the typical size of the grounding electrode conductor using copper?", optionA: "1/0 AWG", optionB: "6 AWG", optionC: "2 AWG", optionD: "4 AWG", correct: "D" },
+  { moduleNumber: 5, question: "What must pass before insulation and drywall installation?", optionA: "Foundation inspection", optionB: "Rough-in inspection", optionC: "Final inspection", optionD: "Framing inspection", correct: "B" },
+  { moduleNumber: 5, question: "What does the HVAC inspection check?", optionA: "Only equipment size", optionB: "Duct sizing, support, sealing, and clearances", optionC: "Only installation speed", optionD: "Only material cost", correct: "B" },
+  { moduleNumber: 5, question: "What may be required during plumbing rough-in inspection?", optionA: "Only visual inspection", optionB: "Pressure test of water lines and drain test", optionC: "Only pipe count", optionD: "Only material verification", correct: "B" },
+  { moduleNumber: 5, question: "What does the electrical inspection verify about wire sizing?", optionA: "Color coding", optionB: "Proper sizing for the amperage", optionC: "Length only", optionD: "Cost effectiveness", correct: "B" },
+  { moduleNumber: 5, question: "Who holds coordination meetings to resolve conflicts?", optionA: "City inspector", optionB: "Construction Manager", optionC: "Homeowner", optionD: "Lead electrician", correct: "B" },
+  { moduleNumber: 5, question: "What happens if drain pipes aren't properly sloped?", optionA: "Nothing significant", optionB: "Drainage problems and backups", optionC: "Only slower drainage", optionD: "Only noise issues", correct: "B" },
+  { moduleNumber: 5, question: "What are stub-outs?", optionA: "Pipe supports", optionB: "Short pipe extensions for future fixture connections", optionC: "Pipe caps", optionD: "Drainage connections", correct: "B" },
+  { moduleNumber: 5, question: "Where are electrical boxes installed?", optionA: "Only at outlets", optionB: "At every outlet, switch, and fixture location", optionC: "Only at switches", optionD: "Only at light fixtures", correct: "B" },
+  { moduleNumber: 5, question: "What special systems wiring is typically installed during rough-in?", optionA: "Only phone lines", optionB: "Phone, data, cable TV, doorbell, security", optionC: "Only internet cables", optionD: "Only security systems", correct: "B" },
+  { moduleNumber: 5, question: "How are electrical wires secured to framing?", optionA: "With screws", optionB: "With staples", optionC: "With tape", optionD: "With clips", correct: "B" },
+  { moduleNumber: 5, question: "What stage is characterized as installing the 'guts' of the house?", optionA: "Framing", optionB: "Rough-in mechanicals", optionC: "Foundation", optionD: "Exterior finishes", correct: "B" },
+
+  // Module 6: Insulation and Drywall (20 questions)
+  { moduleNumber: 6, question: "According to research by Oak Ridge National Laboratory, what percentage reduction in cavity R-value occurs when just 4% void area exists in batt insulation installation?", optionA: "25% reduction", optionB: "50% reduction", optionC: "35% reduction", optionD: "60% reduction", correct: "B" },
+  { moduleNumber: 6, question: "What is the primary reason that mineral wool (rock wool) batts are preferred over fiberglass in fire-rated assemblies?", optionA: "Lower cost per square foot of coverage", optionB: "Easier installation in tight spaces", optionC: "Higher melting point", optionD: "Better moisture resistance in humid climates", correct: "C" },
+  { moduleNumber: 6, question: "In Climate Zone 5 (covering regions like Chicago and Denver), what are the typical minimum R-value requirements for ceilings under current IECC standards?", optionA: "R-38", optionB: "R-60", optionC: "R-30", optionD: "R-49", correct: "D" },
+  { moduleNumber: 6, question: "Why does cellulose insulation perform better than fiberglass in preventing wind washing in ventilated attic applications?", optionA: "It has a higher installed density of 1.5 to 2.0 pounds per cubic foot", optionB: "It contains fire-retardant chemicals that seal air gaps", optionC: "It naturally adheres to roof sheathing", optionD: "It expands after installation to fill voids", correct: "A" },
+  { moduleNumber: 6, question: "What is the critical difference between open-cell and closed-cell spray polyurethane foam regarding vapor permeability?", optionA: "Open-cell is vapor impermeable while closed-cell allows drying", optionB: "Both types have identical vapor transmission characteristics", optionC: "Closed-cell provides less than 1.0 perm at 2 inches while open-cell is vapor permeable at 5-20 perms", optionD: "Open-cell requires separate vapor barriers in all climate zones", correct: "C" },
+  { moduleNumber: 6, question: "During spray foam installation, what personal protective equipment concern makes the process particularly hazardous compared to other insulation types?", optionA: "Extreme temperatures requiring heat-resistant gloves", optionB: "Isocyanate health hazards requiring respirators and full protective suits", optionC: "High voltage electrical risks from spray equipment", optionD: "Silica dust exposure requiring N95 respirators", correct: "B" },
+  { moduleNumber: 6, question: "What property of gypsum (calcium sulfate dihydrate) allows it to be manufactured into board form through rehydration?", optionA: "When heated to drive off moisture and reground, it can be remixed with water to form a paste that hardens", optionB: "It naturally bonds with cellulose fibers under pressure", optionC: "It becomes adhesive when exposed to air", optionD: "It crystallizes when combined with paper facing", correct: "A" },
+  { moduleNumber: 6, question: "Why is Type X gypsum board required in attached garage walls according to building codes?", optionA: "It provides superior sound isolation from vehicle noise", optionB: "It resists moisture damage from humidity", optionC: "It incorporates glass fiber reinforcement achieving one-hour fire-resistance ratings", optionD: "It has higher impact resistance for vehicle damage", correct: "C" },
+  { moduleNumber: 6, question: "What is the primary technical reason for hanging ceiling drywall before wall drywall in standard construction sequencing?", optionA: "Ceilings require different screw types than walls", optionB: "Wall sheets support ceiling sheet edges and simplify ceiling-wall joint treatment", optionC: "Ceiling compound must dry before wall compound is applied", optionD: "Building codes mandate ceiling installation first for fire safety", correct: "B" },
+  { moduleNumber: 6, question: "According to code-mandated fastener spacing, what is the maximum spacing for drywall screws on ceilings in standard wind zones?", optionA: "16 inches on-center", optionB: "8 inches on-center", optionC: "12 inches on-center", optionD: "7 inches on-center", correct: "C" },
+  { moduleNumber: 6, question: "What critical installation error occurs when drywall screws are driven with excessive force using improperly adjusted screw guns?", optionA: "Screws strip out of wood framing requiring replacement", optionB: "Face paper breaks or gypsum core crushes, eliminating holding power", optionC: "Screws overheat and lose tensile strength", optionD: "Electrical wiring behind drywall becomes damaged", correct: "B" },
+  { moduleNumber: 6, question: "In professional drywall finishing, why is paper tape universally preferred over fiberglass mesh tape for achieving Level 4 and Level 5 finishes?", optionA: "Paper tape costs less per linear foot", optionB: "Mesh tape cannot be used with setting-type compounds", optionC: "Paper tape provides maximum strength and crack resistance with proper embedding", optionD: "Mesh tape requires special application tools", correct: "C" },
+  { moduleNumber: 6, question: "What distinguishes a Level 5 drywall finish from a Level 4 finish according to Gypsum Association specifications?", optionA: "Level 5 uses three coats while Level 4 uses only two coats", optionB: "Level 5 requires spray-applied texture while Level 4 is smooth", optionC: "Level 5 requires an additional skim coat over the entire surface beyond Level 4 requirements", optionD: "Level 5 mandates sanding between all coats while Level 4 does not", correct: "C" },
+  { moduleNumber: 6, question: "During the tape coat application, what is the primary purpose of the thin cover coat applied immediately after tape embedment?", optionA: "To add structural strength to the joint", optionB: "To prevent tape edges from lifting during drying and begin surface leveling", optionC: "To seal the tape against moisture penetration", optionD: "To provide a surface for measuring joint width", correct: "B" },
+  { moduleNumber: 6, question: "What inspection technique do Construction Managers use to reveal surface irregularities invisible under diffuse overhead lighting?", optionA: "Infrared thermal imaging", optionB: "Moisture meters to detect compound density variations", optionC: "Low-angle lighting (raking light) that highlights ridges and depressions", optionD: "Ultrasonic testing for void detection", correct: "C" },
+  { moduleNumber: 6, question: "According to current energy codes, what is the typical air leakage limit for residential buildings in Climate Zones 3-8 measured in air changes per hour at 50 Pascals (ACH50)?", optionA: "7 to 10 ACH50", optionB: "1 to 2 ACH50", optionC: "3 to 5 ACH50", optionD: "10 to 15 ACH50", correct: "C" },
+  { moduleNumber: 6, question: "Why is the rough blower door test conducted after insulation but before drywall installation rather than only at final completion?", optionA: "Building codes prohibit testing after drywall installation", optionB: "Testing equipment cannot fit through doorways once trim is installed", optionC: "It allows identification and correction of air leakage sources while they remain accessible", optionD: "Drywall installation alters building volume calculations", correct: "C" },
+  { moduleNumber: 6, question: "What environmental condition most dramatically extends joint compound drying times, potentially requiring dehumidification equipment?", optionA: "Relative humidity above 70%", optionB: "Temperatures below 32°F", optionC: "Direct sunlight exposure", optionD: "Poor ventilation with stagnant air", correct: "A" },
+  { moduleNumber: 6, question: "What percentage of generated dust do vacuum sanders typically capture at the sanding point before it becomes airborne?", optionA: "60-70%", optionB: "75-85%", optionC: "50-60%", optionD: "90-95%", correct: "D" },
+  { moduleNumber: 6, question: "According to industry research, what percentage of energy performance deficiencies in residential and commercial buildings can be attributed to improper insulation installation?", optionA: "5-10%", optionB: "15-40%", optionC: "40-60%", optionD: "60-80%", correct: "B" },
+
+  // Module 7: Interior Finishes (20 questions)
+  { moduleNumber: 7, question: "What gives the house its character and style?", optionA: "Foundation", optionB: "Interior finishes", optionC: "Framing", optionD: "Mechanical systems", correct: "B" },
+  { moduleNumber: 7, question: "What is applied to drywall surfaces before painting?", optionA: "Sealant", optionB: "Drywall primer/sealer", optionC: "Paint directly", optionD: "Texture", correct: "B" },
+  { moduleNumber: 7, question: "Where is caulk applied during interior finishing?", optionA: "Only around windows", optionB: "Joints where trim meets walls and ceilings", optionC: "Only around doors", optionD: "Only in bathrooms", correct: "B" },
+  { moduleNumber: 7, question: "How many coats of paint are typically applied?", optionA: "One coat", optionB: "Two coats", optionC: "Three coats", optionD: "Four coats", correct: "B" },
+  { moduleNumber: 7, question: "How are pre-hung doors installed?", optionA: "Built on site", optionB: "Set into rough openings and shimmed level and plumb", optionC: "Hung after walls are finished", optionD: "Attached directly to studs", correct: "B" },
+  { moduleNumber: 7, question: "Where are baseboards installed?", optionA: "Only in bedrooms", optionB: "Along the bottom of all walls", optionC: "Only in living areas", optionD: "Only around windows", correct: "B" },
+  { moduleNumber: 7, question: "Where is crown molding typically installed?", optionA: "Around windows", optionB: "Where walls meet the ceiling", optionC: "Around doors", optionD: "Along baseboards", correct: "B" },
+  { moduleNumber: 7, question: "How are hardwood floors typically attached?", optionA: "With screws only", optionB: "Nailed or glued to the subfloor", optionC: "Floating installation only", optionD: "With adhesive tape", correct: "B" },
+  { moduleNumber: 7, question: "What is applied between tiles after installation?", optionA: "Sealant", optionB: "Grout", optionC: "Adhesive", optionD: "Caulk", correct: "B" },
+  { moduleNumber: 7, question: "What type of floor is vinyl plank or laminate considered?", optionA: "Glued down", optionB: "Floating floor", optionC: "Nailed down", optionD: "Stapled down", correct: "B" },
+  { moduleNumber: 7, question: "When does countertop templating occur?", optionA: "Before cabinet installation", optionB: "After cabinets are installed", optionC: "During cabinet installation", optionD: "Before flooring", correct: "B" },
+  { moduleNumber: 7, question: "What is the typical sequence for interior finishes?", optionA: "Flooring, paint, trim, cabinets", optionB: "Paint, trim and cabinets, flooring, final touch-up", optionC: "Cabinets, flooring, paint, trim", optionD: "Trim, flooring, cabinets, paint", correct: "B" },
+  { moduleNumber: 7, question: "Why are finished surfaces protected during construction?", optionA: "For appearance only", optionB: "To minimize damage from subsequent trades", optionC: "To speed up work", optionD: "To save money", correct: "B" },
+  { moduleNumber: 7, question: "How are hardwood floors protected after installation?", optionA: "With plastic sheeting", optionB: "Covered with cardboard or protective paper", optionC: "Left uncovered", optionD: "With cloth covers", correct: "B" },
+  { moduleNumber: 7, question: "What does the CM ensure about finish materials?", optionA: "Only cost effectiveness", optionB: "Selected, ordered, and delivered on time", optionC: "Only quality", optionD: "Only appearance", correct: "B" },
+  { moduleNumber: 7, question: "What is checked during CM's quality control inspection?", optionA: "Only paint quality", optionB: "Paint smoothness, trim joints, cabinet level, flooring", optionC: "Only cabinet installation", optionD: "Only flooring installation", correct: "B" },
+  { moduleNumber: 7, question: "What is cut for sinks and faucets during countertop fabrication?", optionA: "Templates", optionB: "Holes", optionC: "Edges", optionD: "Supports", correct: "B" },
+  { moduleNumber: 7, question: "What creates a seamless appearance around trim?", optionA: "Paint only", optionB: "Caulk application", optionC: "Sanding only", optionD: "Primer only", correct: "B" },
+  { moduleNumber: 7, question: "What stage requires careful sequencing to protect surfaces?", optionA: "Framing", optionB: "Interior finishes", optionC: "Foundation", optionD: "Rough-in", correct: "B" },
+  { moduleNumber: 7, question: "When are closet rods and shelving installed?", optionA: "Before drywall", optionB: "During interior finishing", optionC: "Before framing", optionD: "After move-in", correct: "B" },
+
+  // Module 8: Final Mechanicals & Exterior Completion (20 questions)
+  { moduleNumber: 8, question: "What devices are installed in electrical boxes during final electrical work?", optionA: "Only outlets", optionB: "Outlets, switches, and cover plates", optionC: "Only switches", optionD: "Only cover plates", correct: "B" },
+  { moduleNumber: 8, question: "What safety devices must be installed and tested?", optionA: "Only smoke detectors", optionB: "Smoke and carbon monoxide detectors", optionC: "Only carbon monoxide detectors", optionD: "Only security systems", correct: "B" },
+  { moduleNumber: 8, question: "What must be clearly done to all circuits in the electrical panel?", optionA: "Color coded", optionB: "Labeled", optionC: "Numbered", optionD: "Tested", correct: "B" },
+  { moduleNumber: 8, question: "What hardwired appliances require final electrical connections?", optionA: "Only the oven", optionB: "Oven, cooktop, dishwasher, garbage disposal", optionC: "Only the dishwasher", optionD: "Only the garbage disposal", correct: "B" },
+  { moduleNumber: 8, question: "What plumbing fixtures are installed during final plumbing?", optionA: "Only sinks", optionB: "Sinks, faucets, toilets, showerheads", optionC: "Only toilets", optionD: "Only faucets", correct: "B" },
+  { moduleNumber: 8, question: "What must be done to all plumbing fixtures after installation?", optionA: "Only visual inspection", optionB: "Tested for proper operation and leaks", optionC: "Only leak testing", optionD: "Only operation testing", correct: "B" },
+  { moduleNumber: 8, question: "What HVAC components are installed in all rooms?", optionA: "Only supply registers", optionB: "Supply registers and return air grilles", optionC: "Only return air grilles", optionD: "Only thermostats", correct: "B" },
+  { moduleNumber: 8, question: "What must be done to the HVAC system after installation?", optionA: "Only started up", optionB: "Started up, tested, and balanced", optionC: "Only tested", optionD: "Only balanced", correct: "B" },
+  { moduleNumber: 8, question: "What is installed as a base for concrete driveways?", optionA: "Sand only", optionB: "Compacted gravel base", optionC: "Dirt only", optionD: "Plastic sheeting", correct: "B" },
+  { moduleNumber: 8, question: "What are control joints used for in concrete?", optionA: "Decoration", optionB: "Control cracking", optionC: "Speed up curing", optionD: "Add strength", correct: "B" },
+  { moduleNumber: 8, question: "What ensures proper drainage in final grading?", optionA: "Level grading", optionB: "Grading away from the house", optionC: "Grading toward the house", optionD: "Random grading", correct: "B" },
+  { moduleNumber: 8, question: "What is spread in planting areas during landscaping?", optionA: "Sand", optionB: "Topsoil", optionC: "Gravel", optionD: "Mulch only", correct: "B" },
+  { moduleNumber: 8, question: "What inspection tests outlets for proper wiring and grounding?", optionA: "Rough electrical", optionB: "Final electrical", optionC: "Framing", optionD: "Final building", correct: "B" },
+  { moduleNumber: 8, question: "What does the final plumbing inspection verify?", optionA: "Only installation", optionB: "Installation, operation, and proper venting", optionC: "Only operation", optionD: "Only venting", correct: "B" },
+  { moduleNumber: 8, question: "What may be tested during final HVAC inspection?", optionA: "Only equipment", optionB: "System operation", optionC: "Only ductwork", optionD: "Only venting", correct: "B" },
+  { moduleNumber: 8, question: "What does final grading inspection verify?", optionA: "Only appearance", optionB: "Proper drainage and erosion control", optionC: "Only plant placement", optionD: "Only soil type", correct: "B" },
+  { moduleNumber: 8, question: "Who schedules all final mechanical inspections?", optionA: "Individual contractors", optionB: "Construction Manager", optionC: "City inspector", optionD: "Homeowner", correct: "B" },
+  { moduleNumber: 8, question: "What must be removed during site cleanup?", optionA: "Only debris", optionB: "All debris, equipment, and temporary structures", optionC: "Only equipment", optionD: "Only temporary structures", correct: "B" },
+  { moduleNumber: 8, question: "What is installed according to the landscape plan?", optionA: "Only grass", optionB: "Sod, trees, shrubs, and plants", optionC: "Only trees", optionD: "Only shrubs", correct: "B" },
+  { moduleNumber: 8, question: "What defines borders in landscaped areas?", optionA: "Only mulch", optionB: "Edging installation", optionC: "Only plants", optionD: "Only irrigation", correct: "B" },
+
+  // Module 9: Final Finishes & Cleaning (20 questions)
+  { moduleNumber: 9, question: "What major appliances are typically delivered and installed?", optionA: "Only kitchen appliances", optionB: "Refrigerator, stove, dishwasher, microwave, washer, dryer", optionC: "Only laundry appliances", optionD: "Only large appliances", correct: "B" },
+  { moduleNumber: 9, question: "What must be done to all appliances after installation?", optionA: "Only visual inspection", optionB: "Tested for proper operation", optionC: "Only cleaning", optionD: "Only positioning", correct: "B" },
+  { moduleNumber: 9, question: "What door hardware is installed on all doors?", optionA: "Only handles", optionB: "Handles, knobs, and locks", optionC: "Only locks", optionD: "Only knobs", correct: "B" },
+  { moduleNumber: 9, question: "Where are knobs and pulls installed?", optionA: "Only kitchen cabinets", optionB: "All cabinet doors and drawers", optionC: "Only bathroom cabinets", optionD: "Only drawers", correct: "B" },
+  { moduleNumber: 9, question: "What bathroom accessories are typically installed?", optionA: "Only towel bars", optionB: "Towel bars, toilet paper holders, and other accessories", optionC: "Only toilet paper holders", optionD: "Only mirrors", correct: "B" },
+  { moduleNumber: 9, question: "When does the painting contractor return for final work?", optionA: "Before any installations", optionB: "After installation of trim, cabinets, or flooring", optionC: "During installations", optionD: "Only if requested", correct: "B" },
+  { moduleNumber: 9, question: "What does final paint touch-up address?", optionA: "Color changes", optionB: "Areas damaged during installations", optionC: "Adding new colors", optionD: "Changing finishes", correct: "B" },
+  { moduleNumber: 9, question: "What is removed from the entire house during construction cleaning?", optionA: "Only large debris", optionB: "All construction dust and debris", optionC: "Only dust", optionD: "Only tools", correct: "B" },
+  { moduleNumber: 9, question: "What surfaces are wiped down during cleaning?", optionA: "Only floors", optionB: "Countertops, cabinets, and fixtures", optionC: "Only countertops", optionD: "Only windows", correct: "B" },
+  { moduleNumber: 9, question: "How are windows cleaned?", optionA: "Only inside", optionB: "Inside and out", optionC: "Only outside", optionD: "Only if dirty", correct: "B" },
+  { moduleNumber: 9, question: "What is removed from appliances and fixtures?", optionA: "Only dust", optionB: "All stickers and protective coverings", optionC: "Only stickers", optionD: "Only packaging", correct: "B" },
+  { moduleNumber: 9, question: "What does the Construction Manager create during final walkthrough?", optionA: "Final invoice", optionB: "Punch list", optionC: "Warranty list", optionD: "Maintenance schedule", correct: "B" },
+  { moduleNumber: 9, question: "What is a punch list?", optionA: "Final payment list", optionB: "List of items needing correction or completion", optionC: "List of completed work", optionD: "List of materials used", correct: "B" },
+  { moduleNumber: 9, question: "Who ensures punch list items are completed?", optionA: "Individual contractors", optionB: "Construction Manager", optionC: "Homeowner", optionD: "City inspector", correct: "B" },
+  { moduleNumber: 9, question: "What does the CM compile for the homeowner?", optionA: "Only warranties", optionB: "Warranties, manuals, and maintenance information", optionC: "Only manuals", optionD: "Only maintenance schedules", correct: "B" },
+  { moduleNumber: 9, question: "How should floors be cleaned?", optionA: "Only swept", optionB: "Swept, mopped, or vacuumed as appropriate", optionC: "Only mopped", optionD: "Only vacuumed", correct: "B" },
+  { moduleNumber: 9, question: "What makes the house move-in ready?", optionA: "Only cleaning", optionB: "Final details, installations, and cleaning", optionC: "Only installations", optionD: "Only inspections", correct: "B" },
+  { moduleNumber: 9, question: "What is inspected for imperfections during final paint work?", optionA: "Only walls", optionB: "All walls, ceilings, and trim", optionC: "Only ceilings", optionD: "Only trim", correct: "B" },
+  { moduleNumber: 9, question: "What tool does the CM use during the final walkthrough?", optionA: "Checklist", optionB: "Detailed checklist", optionC: "Notebook", optionD: "Camera", correct: "B" },
+  { moduleNumber: 9, question: "What stage makes every surface clean and ready?", optionA: "Interior finishes", optionB: "Final finishes and cleaning", optionC: "Mechanical installation", optionD: "Exterior completion", correct: "B" },
+
+  // Module 10: Final Walkthrough & Handover (20 questions)
+  { moduleNumber: 10, question: "What is the culmination of the entire construction process?", optionA: "Final inspection only", optionB: "Final walkthrough and handover", optionC: "Final cleaning", optionD: "Final payment", correct: "B" },
+  { moduleNumber: 10, question: "Who walks through the house with the Construction Manager?", optionA: "City inspector", optionB: "Homeowner", optionC: "Contractors", optionD: "Lender", correct: "B" },
+  { moduleNumber: 10, question: "What does the homeowner test during the final walkthrough?", optionA: "Only lights", optionB: "All appliances, fixtures, lights, and systems", optionC: "Only appliances", optionD: "Only systems", correct: "B" },
+  { moduleNumber: 10, question: "What does the homeowner receive during orientation?", optionA: "Only keys", optionB: "Keys, garage door openers, and alarm codes", optionC: "Only garage door openers", optionD: "Only alarm codes", correct: "B" },
+  { moduleNumber: 10, question: "What documentation does the homeowner receive?", optionA: "Only warranties", optionB: "Warranties, manuals, maintenance schedules, plans, and CO", optionC: "Only manuals", optionD: "Only the certificate of occupancy", correct: "B" },
+  { moduleNumber: 10, question: "What is the most comprehensive city inspection?", optionA: "Framing inspection", optionB: "Final building inspection", optionC: "Foundation inspection", optionD: "Electrical inspection", correct: "B" },
+  { moduleNumber: 10, question: "What must be verified before the final inspection?", optionA: "Only current work", optionB: "All previous inspections have been passed", optionC: "Only electrical work", optionD: "Only plumbing work", correct: "B" },
+  { moduleNumber: 10, question: "What safety features are checked during final inspection?", optionA: "Only smoke detectors", optionB: "Smoke detectors, CO detectors, handrails, guardrails", optionC: "Only handrails", optionD: "Only emergency exits", correct: "B" },
+  { moduleNumber: 10, question: "What does egress refer to in the final inspection?", optionA: "Main entrances", optionB: "Emergency exits from bedrooms", optionC: "Garage doors", optionD: "Basement access", correct: "B" },
+  { moduleNumber: 10, question: "What allows the homeowner to legally occupy the house?", optionA: "Final payment", optionB: "Certificate of Occupancy", optionC: "Final inspection only", optionD: "Walkthrough completion", correct: "B" },
+  { moduleNumber: 10, question: "When does the CM conduct a pre-final inspection?", optionA: "After the city inspection", optionB: "Before calling for the final city inspection", optionC: "During the city inspection", optionD: "After handover", correct: "B" },
+  { moduleNumber: 10, question: "Who explains all systems to the homeowner?", optionA: "City inspector", optionB: "Construction Manager", optionC: "Individual contractors", optionD: "Real estate agent", correct: "B" },
+  { moduleNumber: 10, question: "When are final walkthrough punch list items completed?", optionA: "After move-in", optionB: "Promptly after identification", optionC: "At the next inspection", optionD: "Only if major", correct: "B" },
+  { moduleNumber: 10, question: "What must the CM complete for project closeout?", optionA: "Only warranties", optionB: "All paperwork including lien releases", optionC: "Only lien releases", optionD: "Only final inspection", correct: "B" },
+  { moduleNumber: 10, question: "What type of plans does the homeowner receive if changes were made?", optionA: "Original plans", optionB: "As-built plans", optionC: "Rough sketches", optionD: "Digital plans only", correct: "B" },
+  { moduleNumber: 10, question: "Who officially hands over the completed house?", optionA: "City inspector", optionB: "Construction Manager", optionC: "Lead contractor", optionD: "Project owner", correct: "B" },
+  { moduleNumber: 10, question: "What marks the successful completion of the project?", optionA: "Final payment", optionB: "Official handover to homeowner", optionC: "Certificate of occupancy", optionD: "Final inspection", correct: "B" },
+  { moduleNumber: 10, question: "What must be functional during the final inspection?", optionA: "Only electrical systems", optionB: "Smoke and carbon monoxide detectors", optionC: "Only plumbing systems", optionD: "Only HVAC systems", correct: "B" },
+  { moduleNumber: 10, question: "Who ensures warranties are transferred to the homeowner?", optionA: "Manufacturers", optionB: "Construction Manager", optionC: "Individual contractors", optionD: "City inspector", correct: "B" },
+  { moduleNumber: 10, question: "What is the CM's final responsibility?", optionA: "Collecting final payment", optionB: "Official handover marking project completion", optionC: "Scheduling follow-up", optionD: "Closing permits", correct: "B" }
+];
+
+async function main() {
+  console.log('🌱 Starting seed process...');
+
+  try {
+    // Check if data already exists
+    const existingCompanyCount = await prisma.company.count();
+    const existingUserCount = await prisma.user.count();
+    const existingModuleCount = await prisma.module.count();
+    
+    if (existingCompanyCount > 0 || existingUserCount > 0 || existingModuleCount > 0) {
+      console.log('📊 Database already contains data:');
+      console.log(`   - Companies: ${existingCompanyCount}`);
+      console.log(`   - Users: ${existingUserCount}`);
+      console.log(`   - Modules: ${existingModuleCount}`);
+      console.log('⏭️  Skipping seed process to prevent duplicates.');
+      console.log('✅ Seed process completed (no changes made).');
+      return;
+    }
+
+    // Create Public company
+    console.log('📢 Creating Public company...');
+    const publicCompany = await prisma.company.create({
+      data: {
+        companyName: 'Public',
+        companyCode: 'PUBLIC',
+        isPublic: true,
+      },
+    });
+
+    // Create Super Admin user
+    console.log('👨‍💼 Creating Super Admin user...');
+    const hashedSuperAdminPassword = await bcrypt.hash('10modulecourse!100', 10);
+    
+    const superAdmin = await prisma.user.create({
+      data: {
+        name: 'Lean Homebuilding Advisors',
+        email: 'leanhomebuildingadvisors@gmail.com',
+        password: hashedSuperAdminPassword,
+        role: Role.SUPER_ADMIN,
+        companyId: publicCompany.id,
+      },
+    });
+
+    // Create default test student account (hidden from user)
+    console.log('🧪 Creating test student account...');
+    const hashedTestPassword = await bcrypt.hash('johndoe123', 10);
+    
+    const testStudent = await prisma.user.create({
+      data: {
+        name: 'John Doe',
+        email: 'john@doe.com',
+        password: hashedTestPassword,
+        role: Role.STUDENT,
+        companyId: publicCompany.id,
+      },
+    });
+
+    // Create modules
+    console.log('📚 Creating modules...');
+    const modules = [];
+    
+    for (const moduleInfo of moduleData) {
+      const module = await prisma.module.create({
+        data: {
+          moduleNumber: moduleInfo.moduleNumber,
+          title: moduleInfo.title,
+          description: moduleInfo.description,
+          content: moduleInfo.content,
+          order: moduleInfo.order,
+        },
+      });
+      modules.push(module);
+      console.log(`   ✓ Created Module ${moduleInfo.moduleNumber}: ${moduleInfo.title}`);
+    }
+
+    // Create quiz questions
+    console.log('❓ Creating quiz questions...');
+    
+    for (const question of quizQuestions) {
+      const module = modules.find(m => m.moduleNumber === question.moduleNumber);
+      if (module) {
+        await prisma.quiz.create({
+          data: {
+            moduleId: module.id,
+            questionText: question.question,
+            optionA: question.optionA,
+            optionB: question.optionB,
+            optionC: question.optionC,
+            optionD: question.optionD,
+            correctAnswer: question.correct,
+          },
+        });
+      }
+    }
+
+    console.log(`   ✓ Created ${quizQuestions.length} quiz questions across all modules`);
+
+    // Create initial progress for test student (Module 1 unlocked)
+    console.log('🎯 Setting up initial progress...');
+    const firstModule = modules.find(m => m.moduleNumber === 1);
+    if (firstModule) {
+      await prisma.userProgress.create({
+        data: {
+          userId: testStudent.id,
+          moduleId: firstModule.id,
+          videoWatched: false,
+          quizPassed: false,
+          quizAttempts: 0,
+        },
+      });
+    }
+
+    console.log('✅ Seed completed successfully!');
+    console.log('\n📊 Summary:');
+    console.log(`   • 1 Public company created`);
+    console.log(`   • 1 Super Admin user created`);
+    console.log(`   • 1 Test student user created`);
+    console.log(`   • ${modules.length} modules created`);
+    console.log(`   • ${quizQuestions.length} quiz questions created`);
+    console.log(`   • Initial progress setup complete`);
+
+  } catch (error) {
+    console.error('❌ Error during seed:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
