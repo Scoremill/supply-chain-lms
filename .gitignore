@@ -48,3 +48,10 @@ Thumbs.db
 # Lock files (will be regenerated)
 yarn.lock
 package-lock.json
+.yarn/
+
+CLAUDE.md
+CONTENT_ENHANCEMENT_REFERENCE.md
+MIGRATION_NOTES.md
+MIGRATION_NOTES.pdf
+Strategem_Build_A_Home_User_Manual.docx
